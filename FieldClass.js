@@ -119,8 +119,8 @@ module.exports = class Field {
             case undefined:
                 this.gameOver('out');
                 return true;
-            case 'O':
-                this.gameOver('O');
+            case hole:
+                this.gameOver(hole);
                 return true;
             case '^':
                 this.gameOver('win');
@@ -136,7 +136,7 @@ module.exports = class Field {
                 console.log('You went out of bounds! Game Over.');
                 this.gameActive = false;
                 break;
-            case 'O':
+            case hole:
                 console.log('You fell down a hole! Game Over.');
                 this.gameActive = false;
                 break;

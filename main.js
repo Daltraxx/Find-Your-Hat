@@ -7,7 +7,4 @@ let game = new Field([
     ['░', '^', '░'],
   ]);
 
-
-
-
 game.playGame();
