@@ -87,6 +87,14 @@ module.exports = class Field {
     }
 
     moveUp() {
+        //try catch statement required in cases of vertical movement
+        //(trying to read first index of undefined - out of bounds - will halt program)
+        try {
+            const newPosition = this.gameGrid[this.playerPosition[0] - 1][this.playerPosition[1]];
+        } catch {
+            this.gameOver('out');
+            return;
+        }
         const newPosition = this.gameGrid[this.playerPosition[0] - 1][this.playerPosition[1]];
         if (this.meetsEndConditions(newPosition)) {
             return;
@@ -97,7 +105,6 @@ module.exports = class Field {
     }
         
     moveDown() {
-        //try catch statement required in this case so error doesn't stop program
         try {
             const newPosition = this.gameGrid[this.playerPosition[0] + 1][this.playerPosition[1]];
         } catch {
