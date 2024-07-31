@@ -122,8 +122,8 @@ module.exports = class Field {
             case hole:
                 this.gameOver(hole);
                 return true;
-            case '^':
-                this.gameOver('win');
+            case hat:
+                this.gameOver(hat);
                 return true;
             default:
                 return false;
