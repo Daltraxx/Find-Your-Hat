@@ -153,4 +153,46 @@ module.exports = class Field {
         }
     }
 
+    static generateField(fieldHeight, fieldWidth, percentageHoles) {
+        let field = [];
+
+        //function that sets any given location to be a hole based on percentage chance
+        const setHole = (percentageHoles) => {
+            return Math.random() * 100 < 40;
+        }
+    
+        for (let i = 0; i < fieldHeight; i++) {
+            field.push(new Array(fieldWidth).fill(fieldCharacter));
+        }
+
+        //set player position in fixed spot for now
+        field[0][0] = pathCharacter;
+        //set hat in fixed position for now
+        field[fieldHeight - 1][fieldWidth - 2] = hat;
+        
+        let holeCount = 0;
+        
+        for (let row = 0; row < fieldHeight; row++) {
+            for (let column = 0; column < fieldWidth; column++) {
+                if (field[row][column] === fieldCharacter) {
+                    if (setHole(percentageHoles)) {
+                        field[row][column] = hole
+                        holeCount++;
+                        //ensure there are never more holes than the percentage allows
+                        if (holeCount >= Math.floor((fieldHeight * fieldWidth) * (percentageHoles / 100))) {
+                            return field;
+                        }
+                    }
+                    
+                }
+            }
+        }
+
+        return field;
+
+    }
+
 }
+
+//console.log(Field.generateField(6, 6, 25));
+
