@@ -6,7 +6,7 @@ const fieldCharacter = '░';
 const pathCharacter = '*';
 
 
-module.exports = class Field {
+/*module.exports = */class Field {
     constructor(gameGrid) {
         this.gameGrid = gameGrid;
         this.playerRowPosition = 0;
@@ -154,19 +154,19 @@ module.exports = class Field {
         }
     }
 
-    static generateField(fieldHeight, fieldWidth, percentageHoles) {
+    //function for setting random position, to be used for player and hat in generateField
+    static getKeyPosition(fieldHeight, fieldWidth) {
+        let row = Math.floor(Math.random() * fieldHeight);
+        let column = Math.floor(Math.random() * fieldWidth);
+        return [row, column];
+    }
+
+    static generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom = false, hatRandom = false) {
         let field = [];
 
         //function that sets any given location to be a hole based on percentage chance
         const setHole = (percentageHoles) => {
             return Math.random() * 100 <= percentageHoles;
-        }
-
-        //function for setting random position, te be used for player and hat
-        const getKeyPosition = () => {
-            let column = Math.floor(Math.random() * fieldWidth);
-            let row = Math.floor(Math.random() * fieldHeight);
-            return [row, column];
         }
     
         //fill out field with predefined height and width and fill with fieldCharacter
@@ -174,14 +174,19 @@ module.exports = class Field {
             field.push(new Array(fieldWidth).fill(fieldCharacter));
         }
 
-        //set player position in random spot
-        let [playerRow, playerColumn] = getKeyPosition();
-        field[0][0] = pathCharacter;
-        //set hat in random spot, making sure it's not same spot as player
-        let [hatRow, hatColumn] = [null, null];
-        do {
-            [hatRow, hatColumn] = getKeyPosition();
-        } while (hatRow === playerRow && hatColumn === playerColumn);
+        //set player position in random spot if playerRandom is true
+        let [playerRow, playerColumn] = [0, 0];
+        playerRandom ? [playerRow, playerColumn] = Field.getKeyPosition(fieldHeight, fieldWidth) : null;
+        field[playerRow][playerColumn] = pathCharacter;
+        
+        //set hat in random spot if hatRandom is true, making sure it's not same spot as player
+        let [hatRow, hatColumn] = [fieldHeight - 1, fieldWidth - 2];
+        if (hatRandom) {
+            do {
+                [hatRow, hatColumn] = Field.getKeyPosition(fieldHeight, fieldWidth);
+            } while (hatRow === playerRow && hatColumn === playerColumn);
+        }
+        
         field[hatRow][hatColumn] = hat;
         
         
@@ -210,9 +215,9 @@ module.exports = class Field {
 
 }
 
-/*
-let testField = new Field(Field.generateField(10, 20, 20));
+
+let testField = new Field(Field.generateField(10, 20, 20, true, true));
 testField.print();
-*/
+
 
 
