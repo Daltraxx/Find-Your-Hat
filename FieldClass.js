@@ -11,7 +11,7 @@ module.exports = class Field {
         this.gameGrid = gameGrid;
         this.playerRowPosition = 0;
         this.playerColumnPosition = 0;
-        this.gameActive = true;
+        this.gameActive = false;
         this.getPlayerPosition(gameGrid);
     }
 
@@ -34,6 +34,7 @@ module.exports = class Field {
 
     playGame() {
         console.log("Select a WASD control and press enter to navigate the map and find your hat!");
+        this.gameActive = true;
         while (this.gameActive) {
             this.playTurn();
         }
