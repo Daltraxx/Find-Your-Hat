@@ -123,7 +123,13 @@ module.exports = class Field {
         while (this.gameActive) {
             this.playTurn();
         }
-    }   
+    }
+    
+    printField() {
+        for (let arr of this.gameGrid) {
+            console.log(arr.join(''));
+        }
+    }
 
     playTurn() {
         this.printField();
@@ -131,11 +137,6 @@ module.exports = class Field {
         this.move(direction);
     }
 
-    printField() {
-        for (let arr of this.gameGrid) {
-            console.log(arr.join(''));
-        }
-    }
 
     move(direction) {
         switch (direction) {
