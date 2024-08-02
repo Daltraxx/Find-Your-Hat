@@ -7,6 +7,6 @@ let game = new Field([
     ['░', '^', '░'],
   ]);
 
-let biggerGame = new Field(Field.generateField(10, 20, 20, true, true));
+let biggerGame = new Field();
 
 biggerGame.playGame();

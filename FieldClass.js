@@ -7,12 +7,11 @@ const pathCharacter = '*';
 
 
 module.exports = class Field {
-    constructor(gameGrid) {
+    constructor(gameGrid = null) {
         this.gameGrid = gameGrid;
         this.playerRowPosition = 0;
         this.playerColumnPosition = 0;
         this.gameActive = false;
-        this.getPlayerPosition(gameGrid);
     }
 
     print() {
@@ -21,18 +20,10 @@ module.exports = class Field {
         }
     }
 
-    getPlayerPosition(field) {
-        for (let row = 0; row < field.length; row++) {
-            for (let column = 0; column < field[row].length; column++) {
-                if (field[row][column] === pathCharacter) {
-                    [this.playerRowPosition, this.playerColumnPosition] = [row, column];
-                    return;
-                }
-            }
-        }
-    }
-
     playGame() {
+        if (this.gameGrid === null) {
+            this.gameGrid = this.generateField(10, 20, 20, true, true);
+        }
         console.log("Select a WASD control and press enter to navigate the map and find your hat!");
         this.gameActive = true;
         while (this.gameActive) {
@@ -152,13 +143,13 @@ module.exports = class Field {
     }
 
     //function for setting random position, to be used for player and hat in generateField
-    static getKeyPosition(fieldHeight, fieldWidth) {
+    getKeyPosition(fieldHeight, fieldWidth) {
         let row = Math.floor(Math.random() * fieldHeight);
         let column = Math.floor(Math.random() * fieldWidth);
         return [row, column];
     }
 
-    static generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom = false, hatRandom = false) {
+    generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom = false, hatRandom = false) {
         let field = [];
 
         //function that sets any given location to be a hole based on percentage chance
@@ -172,15 +163,16 @@ module.exports = class Field {
         }
 
         //set player position in random spot if playerRandom is true
-        let [playerRow, playerColumn] = [0, 0];
-        playerRandom ? [playerRow, playerColumn] = Field.getKeyPosition(fieldHeight, fieldWidth) : null;
+        let [playerRow, playerColumn] = [this.playerRowPosition, this.playerColumnPosition];
+        playerRandom ? [playerRow, playerColumn] = this.getKeyPosition(fieldHeight, fieldWidth) : null;
+        [this.playerRowPosition, this.playerColumnPosition] = [playerRow, playerColumn];
         field[playerRow][playerColumn] = pathCharacter;
         
         //set hat in random spot if hatRandom is true, making sure it's not same spot as player
         let [hatRow, hatColumn] = [fieldHeight - 1, fieldWidth - 2];
         if (hatRandom) {
             do {
-                [hatRow, hatColumn] = Field.getKeyPosition(fieldHeight, fieldWidth);
+                [hatRow, hatColumn] = this.getKeyPosition(fieldHeight, fieldWidth);
             } while (hatRow === playerRow && hatColumn === playerColumn);
         }
         
@@ -206,7 +198,7 @@ module.exports = class Field {
             }
         }
 
-        return field;
+        this.gameGrid = field;
 
     }
 
