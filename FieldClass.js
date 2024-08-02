@@ -158,7 +158,7 @@ module.exports = class Field {
 
         //function that sets any given location to be a hole based on percentage chance
         const setHole = (percentageHoles) => {
-            return Math.random() * 100 < 40;
+            return Math.random() * 100 <= percentageHoles;
         }
     
         for (let i = 0; i < fieldHeight; i++) {
@@ -180,6 +180,7 @@ module.exports = class Field {
                         holeCount++;
                         //ensure there are never more holes than the percentage allows
                         if (holeCount >= Math.floor((fieldHeight * fieldWidth) * (percentageHoles / 100))) {
+                            console.log(holeCount);
                             return field;
                         }
                     }
@@ -194,5 +195,5 @@ module.exports = class Field {
 
 }
 
-//console.log(Field.generateField(6, 6, 25));
+//console.log(Field.generateField(10, 20, 20));
 
