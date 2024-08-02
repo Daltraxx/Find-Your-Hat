@@ -6,7 +6,7 @@ const fieldCharacter = '░';
 const pathCharacter = '*';
 
 
-module.exports = class Field {
+/*module.exports = */class Field {
     constructor(gameGrid) {
         this.gameGrid = gameGrid;
         this.playerPosition = [0, 0];
@@ -160,18 +160,33 @@ module.exports = class Field {
         const setHole = (percentageHoles) => {
             return Math.random() * 100 <= percentageHoles;
         }
+
+        //function for setting random position, te be used for player and hat
+        const getKeyPosition = () => {
+            let column = Math.floor(Math.random() * fieldWidth);
+            let row = Math.floor(Math.random() * fieldHeight);
+            return [row, column];
+        }
     
+        //fill out field with predefined height and width and fill with fieldCharacter
         for (let i = 0; i < fieldHeight; i++) {
             field.push(new Array(fieldWidth).fill(fieldCharacter));
         }
 
-        //set player position in fixed spot for now
-        field[0][0] = pathCharacter;
-        //set hat in fixed position for now
-        field[fieldHeight - 1][fieldWidth - 2] = hat;
+        //set player position in random spot
+        let [playerRow, playerColumn] = getKeyPosition();
+        field[playerRow][playerColumn] = pathCharacter;
+        //set hat in random spot, making sure it's not same spot as player
+        let [hatRow, hatColumn] = [null, null];
+        do {
+            [hatRow, hatColumn] = getKeyPosition();
+        } while (hatRow === playerRow && hatColumn === playerColumn);
+        field[hatRow][hatColumn] = hat;
+        
         
         let holeCount = 0;
         
+        //randomly select spots to be holes if spot is already field character
         for (let row = 0; row < fieldHeight; row++) {
             for (let column = 0; column < fieldWidth; column++) {
                 if (field[row][column] === fieldCharacter) {
@@ -180,7 +195,6 @@ module.exports = class Field {
                         holeCount++;
                         //ensure there are never more holes than the percentage allows
                         if (holeCount >= Math.floor((fieldHeight * fieldWidth) * (percentageHoles / 100))) {
-                            console.log(holeCount);
                             return field;
                         }
                     }
@@ -195,5 +209,8 @@ module.exports = class Field {
 
 }
 
-//console.log(Field.generateField(10, 20, 20));
+let testField = new Field(Field.generateField(10, 20, 20));
+testField.print();
+
+
 
