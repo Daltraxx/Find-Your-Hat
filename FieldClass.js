@@ -6,16 +6,13 @@ const fieldCharacter = '░';
 const pathCharacter = '*';
 
 
-/*module.exports = */class Field {
+module.exports = class Field {
     constructor(gameGrid) {
         this.gameGrid = gameGrid;
         this.playerRowPosition = 0;
         this.playerColumnPosition = 0;
         this.gameActive = true;
-        /*
-        this.hatPosition = null;
-        this.getHatPosition(gameGrid);
-        */
+        this.getPlayerPosition(gameGrid);
     }
 
     print() {
@@ -24,17 +21,16 @@ const pathCharacter = '*';
         }
     }
 
-    /*
-    getHatPosition(map) {
-        for (let i = 0; i < map.length; i++) {
-            for (let j = 0; j < map[i].length; j++) {
-                if (map[i][j] === '^') {
-                    this.hatPosition = [i, j];
+    getPlayerPosition(field) {
+        for (let row = 0; row < field.length; row++) {
+            for (let column = 0; column < field[row].length; column++) {
+                if (field[row][column] === pathCharacter) {
+                    [this.playerRowPosition, this.playerColumnPosition] = [row, column];
+                    return;
                 }
             }
         }
     }
-    */
 
     playGame() {
         console.log("Select a WASD control and press enter to navigate the map and find your hat!");
@@ -215,9 +211,9 @@ const pathCharacter = '*';
 
 }
 
-
+/*
 let testField = new Field(Field.generateField(10, 20, 20, true, true));
 testField.print();
-
+*/
 
 
