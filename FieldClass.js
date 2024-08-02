@@ -6,10 +6,11 @@ const fieldCharacter = '░';
 const pathCharacter = '*';
 
 
-/*module.exports = */class Field {
+module.exports = class Field {
     constructor(gameGrid) {
         this.gameGrid = gameGrid;
-        this.playerPosition = [0, 0];
+        this.playerRowPosition = 0;
+        this.playerColumnPosition = 0;
         this.gameActive = true;
         /*
         this.hatPosition = null;
@@ -68,21 +69,21 @@ const pathCharacter = '*';
     }
 
     moveleft() {
-        const newPosition = this.gameGrid[this.playerPosition[0]][this.playerPosition[1] - 1];
+        const newPosition = this.gameGrid[this.playerRowPosition][this.playerColumnPosition - 1];
         if (this.meetsEndConditions(newPosition)) {
             return;
         }
-        this.playerPosition[1] -= 1;
-        this.gameGrid[this.playerPosition[0]][this.playerPosition[1]] = '*';
+        this.playerColumnPosition -= 1;
+        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = '*';
     }
 
     moveRight() {
-        const newPosition = this.gameGrid[this.playerPosition[0]][this.playerPosition[1] + 1];
+        const newPosition = this.gameGrid[this.playerRowPosition][this.playerColumnPosition + 1];
         if (this.meetsEndConditions(newPosition)) {
             return;
         }
-        this.playerPosition[1] += 1;
-        this.gameGrid[this.playerPosition[0]][this.playerPosition[1]] = '*';
+        this.playerColumnPosition += 1;
+        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = '*';
         
     }
 
@@ -90,34 +91,34 @@ const pathCharacter = '*';
         //try catch statement required in cases of vertical movement
         //(trying to read first index of undefined - out of bounds - will halt program)
         try {
-            const newPosition = this.gameGrid[this.playerPosition[0] - 1][this.playerPosition[1]];
+            const newPosition = this.gameGrid[this.playerRowPosition - 1][this.playerColumnPosition];
         } catch {
             this.gameOver('out');
             return;
         }
-        const newPosition = this.gameGrid[this.playerPosition[0] - 1][this.playerPosition[1]];
+        const newPosition = this.gameGrid[this.playerRowPosition - 1][this.playerColumnPosition];
         if (this.meetsEndConditions(newPosition)) {
             return;
         }
-        this.playerPosition[0] -= 1;
-        this.gameGrid[this.playerPosition[0]][this.playerPosition[1]] = '*';
+        this.playerRowPosition -= 1;
+        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = '*';
 
     }
         
     moveDown() {
         try {
-            const newPosition = this.gameGrid[this.playerPosition[0] + 1][this.playerPosition[1]];
+            const newPosition = this.gameGrid[this.playerRowPosition + 1][this.playerColumnPosition];
         } catch {
             this.gameOver('out');
             return;
         }
 
-        const newPosition = this.gameGrid[this.playerPosition[0] + 1][this.playerPosition[1]];
+        const newPosition = this.gameGrid[this.playerRowPosition + 1][this.playerColumnPosition];
         if (this.meetsEndConditions(newPosition)) {
             return;
         }
-        this.playerPosition[0] += 1;
-        this.gameGrid[this.playerPosition[0]][this.playerPosition[1]] = '*';
+        this.playerRowPosition += 1;
+        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = '*';
 
     }
 
@@ -175,7 +176,7 @@ const pathCharacter = '*';
 
         //set player position in random spot
         let [playerRow, playerColumn] = getKeyPosition();
-        field[playerRow][playerColumn] = pathCharacter;
+        field[0][0] = pathCharacter;
         //set hat in random spot, making sure it's not same spot as player
         let [hatRow, hatColumn] = [null, null];
         do {
@@ -209,8 +210,9 @@ const pathCharacter = '*';
 
 }
 
+/*
 let testField = new Field(Field.generateField(10, 20, 20));
 testField.print();
-
+*/
 
 
