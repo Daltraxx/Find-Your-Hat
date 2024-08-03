@@ -22,6 +22,26 @@ module.exports = class Field {
         return [row, column];
     }
 
+    printVictory() {
+        const victoryArray = 
+            [
+                ['*', '░', '*', '░', '░', '░', '░', '░', '░', '░', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
+                ['*', '░', '*', '░', '░', '░', '░', '░', '░', '░', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
+                ['*', '░', '*', '░', '░', '░', '░', '░', '░', '*', '*', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
+                ['*', '░', '*', '░', '*', '░', '░', '░', '░', '░', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
+                ['*', '░', '*', '░', '░', '░', '░', '░', '░', '░', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
+                ['*', '░', '*', '░', '*', '░', '*', '*', '*', '░', '*', '░', '*', '*', '*', '░', '*', '░', '░', '░', '*', '░', '*', '░'],
+                ['*', '░', '*', '░', '*', '░', '*', '░', '░', '░', '*', '░', '*', '░', '*', '░', '*', '*', '*', '░', '*', '░', '*', '░'],
+                ['*', '░', '*', '░', '*', '░', '*', '░', '░', '░', '*', '░', '*', '░', '*', '░', '*', '░', '*', '░', '*', '*', '*', '░'],
+                ['*', '░', '*', '░', '*', '░', '*', '░', '░', '░', '*', '░', '*', '░', '*', '░', '*', '░', '░', '░', '░', '*', '░', '░'],
+                ['░', '*', '░', '░', '*', '░', '*', '*', '*', '░', '*', '░', '*', '*', '*', '░', '*', '░', '░', '░', '░', '*', '░', '░']
+            ];
+        
+        for (let row of victoryArray) {
+            console.log(row.join(''));
+        }
+    }
+
     generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom = false, hatRandom = false) {
         let field = [];
 
@@ -44,7 +64,7 @@ module.exports = class Field {
         if (hatRandom) {
             do {
                 [hatRow, hatColumn] = this.getKeyPosition(fieldHeight, fieldWidth);
-            } while (hatRow === this.playerRowPosition && this.playerColumnPosition === playerColumn);
+            } while (hatRow === this.playerRowPosition && hatColumn === this.playerColumnPosition);
         }
         
         field[hatRow][hatColumn] = hat;
@@ -125,8 +145,8 @@ module.exports = class Field {
     }
     
     printField() {
-        for (let arr of this.gameGrid) {
-            console.log(arr.join(''));
+        for (let row of this.gameGrid) {
+            console.log(row.join(''));
         }
     }
 
@@ -237,6 +257,7 @@ module.exports = class Field {
                 this.gameActive = false;
                 break;
             default:
+                this.printVictory();
                 console.log('You found your hat! Thank God. Victory!');
                 this.gameActive = false;
         }
