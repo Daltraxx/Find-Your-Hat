@@ -15,6 +15,8 @@ module.exports = class Field {
         this.fieldWidth = 0;
         this.gameActive = false;
         this.holes = [];
+        this.hardMode = true;
+        this.holesHidden = false;
     }
 
     //function for setting random position, to be used for player and hat in generateField
@@ -157,8 +159,18 @@ module.exports = class Field {
 
     playTurn() {
         this.printField();
+        if (this.hardMode && !this.holesHidden) {
+            this.hideHoles();
+        }
         const direction = prompt('Which direction would you like to move? >> ');
         this.move(direction);
+    }
+
+    hideHoles() {
+        for (let hole of this.holes) {
+            this.gameGrid[hole[0]][hole[1]] = fieldCharacter;
+        }
+        this.holesHidden = true;
     }
 
 
