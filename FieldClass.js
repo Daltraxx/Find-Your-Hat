@@ -12,6 +12,7 @@ module.exports = class Field {
         this.playerRowPosition = 0;
         this.playerColumnPosition = 0;
         this.gameActive = false;
+        this.holes = [];
     }
 
     //function for setting random position, to be used for player and hat in generateField
@@ -35,17 +36,15 @@ module.exports = class Field {
         }
 
         //set player position in random spot if playerRandom is true
-        let [playerRow, playerColumn] = [this.playerRowPosition, this.playerColumnPosition];
-        playerRandom ? [playerRow, playerColumn] = this.getKeyPosition(fieldHeight, fieldWidth) : null;
-        [this.playerRowPosition, this.playerColumnPosition] = [playerRow, playerColumn];
-        field[playerRow][playerColumn] = pathCharacter;
+        playerRandom ? [this.playerRowPosition, this.playerColumnPosition] = this.getKeyPosition(fieldHeight, fieldWidth) : null;
+        field[this.playerRowPosition][this.playerColumnPosition] = pathCharacter;
         
         //set hat in random spot if hatRandom is true, making sure it's not same spot as player
         let [hatRow, hatColumn] = [fieldHeight - 1, fieldWidth - 2];
         if (hatRandom) {
             do {
                 [hatRow, hatColumn] = this.getKeyPosition(fieldHeight, fieldWidth);
-            } while (hatRow === playerRow && hatColumn === playerColumn);
+            } while (hatRow === this.playerRowPosition && this.playerColumnPosition === playerColumn);
         }
         
         field[hatRow][hatColumn] = hat;
