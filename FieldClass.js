@@ -15,7 +15,7 @@ module.exports = class Field {
         this.fieldWidth = 0;
         this.gameActive = false;
         this.holes = [];
-        this.hardMode = true;
+        this.hardMode = false;
         this.holesHidden = false;
     }
 
@@ -82,6 +82,14 @@ module.exports = class Field {
     playGame() {
         //if no field is provided, ask player is they want to define settings for one
         if (this.gameGrid === null) {
+            let hardMode = prompt('Hard mode? Enter "y" or "n" >> ');
+            if (hardMode === 'y') {
+                this.hardMode = true;
+                console.log('Game is set to Hard (holes are hidden after the first move).');
+            } else {
+                console.log('Game set to normal (holes are always visible).');
+            }
+
             let makeCustomField = prompt('Would you like to define values for a custom field? Enter "y" or "n" >> ');
             switch (makeCustomField) {
                 case 'y':
@@ -116,11 +124,11 @@ module.exports = class Field {
                     this.gameGrid = this.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
                     break;
                 case 'n':
-                    this.gameGrid = this.generateField(10, 20, 15);
+                    this.hardMode ? this.gameGrid = this.generateField(5, 10, 15) : this.gameGrid = this.generateField(10, 20, 15);
                     break;
                 default:
                     console.log('Invalid input. Starting game with predetermined field settings.');
-                    this.gameGrid = this.generateField(10, 20, 15);                   
+                    this.hardMode ? this.gameGrid = this.generateField(5, 10, 15) : this.gameGrid = this.generateField(10, 20, 15);                   
             }
         }
 
