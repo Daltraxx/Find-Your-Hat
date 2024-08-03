@@ -11,6 +11,8 @@ module.exports = class Field {
         this.gameGrid = gameGrid;
         this.playerRowPosition = 0;
         this.playerColumnPosition = 0;
+        this.fieldHeight = 0;
+        this.fieldWidth = 0;
         this.gameActive = false;
         this.holes = [];
     }
@@ -22,28 +24,10 @@ module.exports = class Field {
         return [row, column];
     }
 
-    printVictory() {
-        const victoryArray = 
-            [
-                ['*', '░', '*', '░', '░', '░', '░', '░', '░', '░', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
-                ['*', '░', '*', '░', '░', '░', '░', '░', '░', '░', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
-                ['*', '░', '*', '░', '░', '░', '░', '░', '░', '*', '*', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
-                ['*', '░', '*', '░', '*', '░', '░', '░', '░', '░', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
-                ['*', '░', '*', '░', '░', '░', '░', '░', '░', '░', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
-                ['*', '░', '*', '░', '*', '░', '*', '*', '*', '░', '*', '░', '*', '*', '*', '░', '*', '░', '░', '░', '*', '░', '*', '░'],
-                ['*', '░', '*', '░', '*', '░', '*', '░', '░', '░', '*', '░', '*', '░', '*', '░', '*', '*', '*', '░', '*', '░', '*', '░'],
-                ['*', '░', '*', '░', '*', '░', '*', '░', '░', '░', '*', '░', '*', '░', '*', '░', '*', '░', '*', '░', '*', '*', '*', '░'],
-                ['*', '░', '*', '░', '*', '░', '*', '░', '░', '░', '*', '░', '*', '░', '*', '░', '*', '░', '░', '░', '░', '*', '░', '░'],
-                ['░', '*', '░', '░', '*', '░', '*', '*', '*', '░', '*', '░', '*', '*', '*', '░', '*', '░', '░', '░', '░', '*', '░', '░']
-            ];
-        
-        for (let row of victoryArray) {
-            console.log(row.join(''));
-        }
-    }
-
     generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom = false, hatRandom = false) {
         let field = [];
+        this.fieldHeight = fieldHeight;
+        this.fieldWidth = fieldWidth;
 
         //function that sets any given location to be a hole based on percentage chance
         const setHole = (percentageHoles) => {
@@ -77,7 +61,8 @@ module.exports = class Field {
             for (let column = 0; column < fieldWidth; column++) {
                 if (field[row][column] === fieldCharacter) {
                     if (setHole(percentageHoles)) {
-                        field[row][column] = hole
+                        field[row][column] = hole;
+                        this.holes.push([row, column]);
                         holeCount++;
                         //ensure there are never more holes than the percentage allows
                         if (holeCount >= Math.floor((fieldHeight * fieldWidth) * (percentageHoles / 100))) {
@@ -129,11 +114,11 @@ module.exports = class Field {
                     this.gameGrid = this.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
                     break;
                 case 'n':
-                    this.gameGrid = this.generateField(10, 20, 20);
+                    this.gameGrid = this.generateField(10, 20, 15);
                     break;
                 default:
                     console.log('Invalid input. Starting game with predetermined field settings.');
-                    this.gameGrid = this.generateField(10, 20, 20);                   
+                    this.gameGrid = this.generateField(10, 20, 15);                   
             }
         }
 
@@ -146,6 +131,26 @@ module.exports = class Field {
     
     printField() {
         for (let row of this.gameGrid) {
+            console.log(row.join(''));
+        }
+    }
+
+    printVictory() {
+        const victoryArray = 
+            [
+                ['*', '░', '*', '░', '░', '░', '░', '░', '░', '░', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
+                ['*', '░', '*', '░', '░', '░', '░', '░', '░', '░', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
+                ['*', '░', '*', '░', '░', '░', '░', '░', '░', '*', '*', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
+                ['*', '░', '*', '░', '*', '░', '░', '░', '░', '░', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
+                ['*', '░', '*', '░', '░', '░', '░', '░', '░', '░', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
+                ['*', '░', '*', '░', '*', '░', '*', '*', '*', '░', '*', '░', '*', '*', '*', '░', '*', '░', '░', '░', '*', '░', '*', '░'],
+                ['*', '░', '*', '░', '*', '░', '*', '░', '░', '░', '*', '░', '*', '░', '*', '░', '*', '*', '*', '░', '*', '░', '*', '░'],
+                ['*', '░', '*', '░', '*', '░', '*', '░', '░', '░', '*', '░', '*', '░', '*', '░', '*', '░', '*', '░', '*', '*', '*', '░'],
+                ['*', '░', '*', '░', '*', '░', '*', '░', '░', '░', '*', '░', '*', '░', '*', '░', '*', '░', '░', '░', '░', '*', '░', '░'],
+                ['░', '*', '░', '░', '*', '░', '*', '*', '*', '░', '*', '░', '*', '*', '*', '░', '*', '░', '░', '░', '░', '*', '░', '░']
+            ];
+        
+        for (let row of victoryArray) {
             console.log(row.join(''));
         }
     }
@@ -177,7 +182,7 @@ module.exports = class Field {
     }
 
     moveleft() {
-        const newPosition = this.gameGrid[this.playerRowPosition][this.playerColumnPosition - 1];
+        const newPosition = [this.playerRowPosition, this.playerColumnPosition - 1];
         if (this.meetsEndConditions(newPosition)) {
             return;
         }
@@ -186,7 +191,7 @@ module.exports = class Field {
     }
 
     moveRight() {
-        const newPosition = this.gameGrid[this.playerRowPosition][this.playerColumnPosition + 1];
+        const newPosition = [this.playerRowPosition, this.playerColumnPosition + 1];
         if (this.meetsEndConditions(newPosition)) {
             return;
         }
@@ -196,15 +201,7 @@ module.exports = class Field {
     }
 
     moveUp() {
-        //try catch statement required in cases of vertical movement
-        //(trying to read first index of undefined - out of bounds - will halt program)
-        try {
-            const newPosition = this.gameGrid[this.playerRowPosition - 1][this.playerColumnPosition];
-        } catch {
-            this.gameOver('out');
-            return;
-        }
-        const newPosition = this.gameGrid[this.playerRowPosition - 1][this.playerColumnPosition];
+        const newPosition = [this.playerRowPosition - 1, this.playerColumnPosition];
         if (this.meetsEndConditions(newPosition)) {
             return;
         }
@@ -214,14 +211,7 @@ module.exports = class Field {
     }
         
     moveDown() {
-        try {
-            const newPosition = this.gameGrid[this.playerRowPosition + 1][this.playerColumnPosition];
-        } catch {
-            this.gameOver('out');
-            return;
-        }
-
-        const newPosition = this.gameGrid[this.playerRowPosition + 1][this.playerColumnPosition];
+        const newPosition = [this.playerRowPosition + 1, this.playerColumnPosition];
         if (this.meetsEndConditions(newPosition)) {
             return;
         }
@@ -231,18 +221,20 @@ module.exports = class Field {
     }
 
     meetsEndConditions(newPosition) {
-        switch (newPosition) {
-            case undefined:
-                this.gameOver('out');
-                return true;
-            case hole:
-                this.gameOver(hole);
-                return true;
-            case hat:
-                this.gameOver(hat);
-                return true;
-            default:
-                return false;
+        let [newPositionRow, newPositionColumn] = newPosition;
+
+        let stringifiedPosition = JSON.stringify(newPosition);
+        if (newPositionRow < 0 || newPositionRow > this.fieldHeight - 1 || newPositionColumn < 0 || newPositionColumn > this.fieldWidth - 1) {
+            this.gameOver('out');
+            return true;
+        } else if (this.gameGrid[newPositionRow][newPositionColumn] === hat) {
+            this.gameOver(hat);
+            return true;
+        } else if (this.holes.find((element) => JSON.stringify(element) === stringifiedPosition)) {
+            this.gameOver(hole);
+            return true;
+        } else {
+            return false;
         }
     }
 
