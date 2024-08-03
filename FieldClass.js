@@ -174,6 +174,7 @@ module.exports = class Field {
         this.move(direction);
     }
 
+    //for use when this.hardMode is set to true
     hideHoles() {
         for (let hole of this.holes) {
             this.gameGrid[hole[0]][hole[1]] = fieldCharacter;
