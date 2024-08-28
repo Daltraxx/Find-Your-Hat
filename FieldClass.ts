@@ -34,6 +34,9 @@ class Field {
 
     //function for setting random position, to be used for player and hat in generateField
     getKeyPosition(fieldHeight : number, fieldWidth : number) {
+        if (fieldHeight < 1 || fieldWidth < 1) {
+            throw new Error('Height and width values cannot be less than 1!');
+        }
         let row = Math.floor(Math.random() * fieldHeight);
         let column = Math.floor(Math.random() * fieldWidth);
         return [row, column];
@@ -93,7 +96,7 @@ class Field {
     }
 
     playGame() {
-        //if no field is provided, ask player is they want to define settings for one
+        //if no field is provided, ask player if they want to define settings for one
         if (this.gameGrid === null) {
             let hardMode = prompt('Hard mode? Enter "y" or "n" >> ');
             if (hardMode === 'y') {
