@@ -48,7 +48,7 @@ class Field {
         this.fieldWidth = fieldWidth;
 
         //function that sets any given location to be a hole based on percentage chance
-        const setHole = (percentageHoles) => {
+        const setHole = (percentageHoles : number) => {
             return Math.random() * 100 <= percentageHoles;
         }
     
