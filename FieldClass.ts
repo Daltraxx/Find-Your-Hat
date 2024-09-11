@@ -3,6 +3,13 @@ export {};
 
 const prompt = require('prompt-sync')({sigint: true});
 
+enum Character {
+    Hat = '^',
+    Hole = 'O',
+    Field = '░',
+    Path = '*'
+}
+
 const hat : string = '^';
 const hole : string = 'O';
 const fieldCharacter : string = '░';
@@ -54,12 +61,12 @@ class Field {
     
         //fill out field with predefined height and width and fill with fieldCharacter
         for (let i = 0; i < fieldHeight; i++) {
-            field.push(new Array(fieldWidth).fill(fieldCharacter));
+            field.push(new Array(fieldWidth).fill(Character.Field));
         }
 
         //set player position in random spot if playerRandom is true
         playerRandom ? [this.playerRowPosition, this.playerColumnPosition] = this.getKeyPosition(fieldHeight, fieldWidth) : null;
-        field[this.playerRowPosition][this.playerColumnPosition] = pathCharacter;
+        field[this.playerRowPosition][this.playerColumnPosition] = Character.Path;
         
         //set hat in random spot if hatRandom is true, making sure it's not same spot as player
         let [hatRow, hatColumn] = [fieldHeight - 1, fieldWidth - 2];
@@ -69,7 +76,7 @@ class Field {
             } while (hatRow === this.playerRowPosition && hatColumn === this.playerColumnPosition);
         }
         
-        field[hatRow][hatColumn] = hat;
+        field[hatRow][hatColumn] = Character.Hat;
         
         
         let holeCount = 0;
@@ -77,9 +84,9 @@ class Field {
         //randomly select spots to be holes if spot is already field character
         for (let row = 0; row < fieldHeight; row++) {
             for (let column = 0; column < fieldWidth; column++) {
-                if (field[row][column] === fieldCharacter) {
+                if (field[row][column] === Character.Field) {
                     if (setHole(percentageHoles)) {
-                        field[row][column] = hole;
+                        field[row][column] = Character.Hole;
                         this.holes.push([row, column]);
                         holeCount++;
                         //ensure there are never more holes than the percentage allows
@@ -202,7 +209,7 @@ class Field {
         }
 
         for (let hole of this.holes) {
-            this.gameGrid[hole[0]][hole[1]] = fieldCharacter;
+            this.gameGrid[hole[0]][hole[1]] = Character.Field;
         }
         this.holesHidden = true;
     }
@@ -302,7 +309,7 @@ class Field {
         if (newPositionRow < 0 || newPositionRow > this.fieldHeight - 1 || newPositionColumn < 0 || newPositionColumn > this.fieldWidth - 1) {
             this.gameOver('out');
             return true;
-        } else if (this.gameGrid[newPositionRow][newPositionColumn] === hat) {
+        } else if (this.gameGrid[newPositionRow][newPositionColumn] === Character.Hat) {
             this.gameOver(hat);
             return true;
         } else if (this.holes.find((element) => JSON.stringify(element) === stringifiedPosition)) {
