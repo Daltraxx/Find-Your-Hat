@@ -151,7 +151,7 @@ describe('Field', () => {
             assert.strictEqual(widthResult, expectedWidth);
         })
 
-        it('sets the player in a random starting position if "playerRandom" is set to true and sets pathCharacter in that starting position', () => {
+        it('sets the player in a random starting position if "playerRandom" is set to true and sets path character in that starting position', () => {
             //setup
             playerRandom = true;
             const defaultPlayerPosition = 0;
@@ -172,8 +172,37 @@ describe('Field', () => {
             //verify
             assert.ok(potentialFailures <= 3);
             assert.strictEqual(field.gameGrid[field.playerRowPosition][field.playerColumnPosition], pathCharacter);
-            
-            
+        })
+
+        it('sets the hat in a random position if "hatRandom" is set to true and sets hat character in that position', () => {
+            //setup
+            hatRandomRandom = true;
+            const defaultHatRowPosition = fieldHeight - 1;
+            const defaultHatColumnPosition = fieldWidth - 1;
+            let potentialFailures = 0;
+            let hatPosition = [];
+            //exercise
+            for (let i = 0; i < 3; i++) {
+                //if resulting position is the default position 3 times, conclude randomization of hat position is failing
+                field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+
+                //get hat position (use method once instead once it's defined)
+                for (let i = 0; i < field.gameGrid.length; i++) {
+                    for (let j = 0; j < field.gameGrid[i].length; j++) {
+                        if (field.gameGrid[i][j] === hat) {
+                            hatPosition = [i, j];
+                        }
+                    }
+                }
+                if (hatPosition[0] === defaultHatRowPosition && hatPosition[1] === defaultHatColumnPosition) {
+                    potentialFailures++;
+                }
+
+            }
+
+            //verify
+            assert.ok(potentialFailures <= 3);
+            assert.strictEqual(field.gameGrid[hatPosition[0]][hatPosition[1]], hat);
         })
     })
 })
