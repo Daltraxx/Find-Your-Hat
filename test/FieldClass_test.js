@@ -174,11 +174,22 @@ describe('Field', () => {
             assert.strictEqual(field.gameGrid[field.playerRowPosition][field.playerColumnPosition], pathCharacter);
         })
 
+        it('sets the player in the default starting position (top left) if "playerRandom" is set to false', () => {
+            //setup
+            playerRandom = false;
+            const defaultPlayerPosition = 0;
+            //exercise
+            field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+
+            //verify
+            assert.strictEqual(field.gameGrid[defaultPlayerPosition][defaultPlayerPosition], pathCharacter);
+        })
+
         it('sets the hat in a random position if "hatRandom" is set to true and sets hat character in that position', () => {
             //setup
             hatRandomRandom = true;
             const defaultHatRowPosition = fieldHeight - 1;
-            const defaultHatColumnPosition = fieldWidth - 1;
+            const defaultHatColumnPosition = fieldWidth - 2;
             let potentialFailures = 0;
             let hatPosition = [];
             //exercise
@@ -203,6 +214,18 @@ describe('Field', () => {
             //verify
             assert.ok(potentialFailures <= 3);
             assert.strictEqual(field.gameGrid[hatPosition[0]][hatPosition[1]], hat);
+        })
+
+        it('sets the hat in the default position (second to last of bottom row) if "hatRandom" is set to false', () => {
+            //setup
+            hatRandom = false;
+            const defaultHatRowPosition = fieldHeight - 1;
+            const defaultHatColumnPosition = fieldWidth - 2;
+            //exercise
+            field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+
+            //verify
+            assert.strictEqual(field.gameGrid[defaultHatRowPosition][defaultHatColumnPosition], hat);
         })
     })
 })
