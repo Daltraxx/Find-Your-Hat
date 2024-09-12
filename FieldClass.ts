@@ -10,11 +10,6 @@ enum Character {
     Path = '*'
 }
 
-const hat : string = '^';
-const hole : string = 'O';
-const fieldCharacter : string = '░';
-const pathCharacter : string = '*';
-
 class Field {
     
     gameGrid: null | string[][];
@@ -310,10 +305,10 @@ class Field {
             this.gameOver('out');
             return true;
         } else if (this.gameGrid[newPositionRow][newPositionColumn] === Character.Hat) {
-            this.gameOver(hat);
+            this.gameOver('win');
             return true;
         } else if (this.holes.find((element) => JSON.stringify(element) === stringifiedPosition)) {
-            this.gameOver(hole);
+            this.gameOver('fell');
             return true;
         } else {
             return false;
@@ -326,7 +321,7 @@ class Field {
                 console.log('You went out of bounds! Game Over.');
                 this.gameActive = false;
                 break;
-            case hole:
+            case 'fell':
                 console.log('You fell down a hole! Game Over.');
                 this.gameActive = false;
                 break;

@@ -8,10 +8,6 @@ var Character;
     Character["Field"] = "\u2591";
     Character["Path"] = "*";
 })(Character || (Character = {}));
-const hat = '^';
-const hole = 'O';
-const fieldCharacter = '░';
-const pathCharacter = '*';
 class Field {
     constructor(gameGrid = null) {
         this.gameGrid = gameGrid;
@@ -254,11 +250,11 @@ class Field {
             return true;
         }
         else if (this.gameGrid[newPositionRow][newPositionColumn] === Character.Hat) {
-            this.gameOver(hat);
+            this.gameOver('win');
             return true;
         }
         else if (this.holes.find((element) => JSON.stringify(element) === stringifiedPosition)) {
-            this.gameOver(hole);
+            this.gameOver('fell');
             return true;
         }
         else {
@@ -271,7 +267,7 @@ class Field {
                 console.log('You went out of bounds! Game Over.');
                 this.gameActive = false;
                 break;
-            case hole:
+            case 'fell':
                 console.log('You fell down a hole! Game Over.');
                 this.gameActive = false;
                 break;

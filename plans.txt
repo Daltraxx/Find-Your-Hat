@@ -1,0 +1,1 @@
+- fix game when field in file is used
