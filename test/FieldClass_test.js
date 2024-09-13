@@ -187,7 +187,7 @@ describe('Field', () => {
 
         it('sets the hat in a random position if "hatRandom" is set to true and sets hat character in that position', () => {
             //setup
-            hatRandomRandom = true;
+            hatRandom = true;
             const defaultHatRowPosition = fieldHeight - 1;
             const defaultHatColumnPosition = fieldWidth - 2;
             let potentialFailures = 0;
@@ -202,8 +202,10 @@ describe('Field', () => {
                     for (let j = 0; j < field.gameGrid[i].length; j++) {
                         if (field.gameGrid[i][j] === hat) {
                             hatPosition = [i, j];
+                            break;
                         }
                     }
+                    
                 }
                 if (hatPosition[0] === defaultHatRowPosition && hatPosition[1] === defaultHatColumnPosition) {
                     potentialFailures++;
@@ -214,6 +216,38 @@ describe('Field', () => {
             //verify
             assert.ok(potentialFailures <= 3);
             assert.strictEqual(field.gameGrid[hatPosition[0]][hatPosition[1]], hat);
+        })
+
+        it('never sets the hat and the player in the same position when "hatRandom" and "playerRandom" are set to true', () => {
+            //setup
+            hatRandom = true;
+            fieldHeight = 2;
+            fieldWidth = 1;
+            let failure = false;
+            let hatPosition = [];
+            //exercise
+            for (let i = 0; i < 3; i++) {
+                //if resulting position is the default position 3 times, conclude randomization of hat position is failing
+                field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+
+                //get hat position (use method once instead once it's defined)
+                for (let i = 0; i < field.gameGrid.length; i++) {
+                    for (let j = 0; j < field.gameGrid[i].length; j++) {
+                        if (field.gameGrid[i][j] === hat) {
+                            hatPosition = [i, j];
+                            break;
+                        }
+                    }
+                }
+                console.log(`Hat position: ${hatPosition[0]}, ${hatPosition[1]}; Player position: ${field.playerRowPosition}, ${field.playerColumnPosition}`);
+                if (hatPosition[0] === field.playerRowPosition && hatPosition[1] === field.playerColumnPosition) {
+                    failure = true;
+                }
+
+            }
+
+            //verify
+            assert.strictEqual(failure, false);
         })
 
         it('sets the hat in the default position (second to last of bottom row) if "hatRandom" is set to false', () => {
