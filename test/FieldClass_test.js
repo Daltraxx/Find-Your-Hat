@@ -191,23 +191,13 @@ describe('Field', () => {
             const defaultHatRowPosition = fieldHeight - 1;
             const defaultHatColumnPosition = fieldWidth - 2;
             let potentialFailures = 0;
-            let hatPosition = [];
+
             //exercise
             for (let i = 0; i < 3; i++) {
                 //if resulting position is the default position 3 times, conclude randomization of hat position is failing
                 field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
 
-                //get hat position (use method once instead once it's defined)
-                for (let i = 0; i < field.gameGrid.length; i++) {
-                    for (let j = 0; j < field.gameGrid[i].length; j++) {
-                        if (field.gameGrid[i][j] === hat) {
-                            hatPosition = [i, j];
-                            break;
-                        }
-                    }
-                    
-                }
-                if (hatPosition[0] === defaultHatRowPosition && hatPosition[1] === defaultHatColumnPosition) {
+                if (field.hatRowPosition === defaultHatRowPosition && field.hatColumnPosition === defaultHatColumnPosition) {
                     potentialFailures++;
                 }
 
@@ -215,7 +205,7 @@ describe('Field', () => {
 
             //verify
             assert.ok(potentialFailures <= 3);
-            assert.strictEqual(field.gameGrid[hatPosition[0]][hatPosition[1]], hat);
+            assert.strictEqual(field.gameGrid[field.hatRowPosition][field.hatColumnPosition], hat);
         })
 
         it('never sets the hat and the player in the same position when "hatRandom" and "playerRandom" are set to true', () => {
@@ -225,27 +215,14 @@ describe('Field', () => {
             fieldHeight = 2;
             fieldWidth = 1;
             let failure = false;
-            let hatPosition = [];
             //exercise
             for (let i = 0; i < 10; i++) {
-                //if resulting position is the default position 3 times, conclude randomization of hat position is failing
-                field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
-
-                //get hat position (use method once instead once it's defined)
-                for (let i = 0; i < field.gameGrid.length; i++) {
-                    for (let j = 0; j < field.gameGrid[i].length; j++) {
-                        if (field.gameGrid[i][j] === hat) {
-                            hatPosition = [i, j];
-                            break;
-                        }
-                    }
-                }
+                field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
                  
-                if (hatPosition[0] === field.playerRowPosition && hatPosition[1] === field.playerColumnPosition) {
+                if (field.hatRowPosition === field.playerRowPosition && field.hatColumnPosition === field.playerColumnPosition) {
                     failure = true;
                     break;
                 }
-
             }
 
             //verify
@@ -265,17 +242,8 @@ describe('Field', () => {
                 //if resulting position is the default position 3 times, conclude randomization of hat position is failing
                 field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
 
-                //get hat position (use method once instead once it's defined)
-                for (let i = 0; i < field.gameGrid.length; i++) {
-                    for (let j = 0; j < field.gameGrid[i].length; j++) {
-                        if (field.gameGrid[i][j] === hat) {
-                            hatPosition = [i, j];
-                            break;
-                        }
-                    }
-                }
                  
-                if (hatPosition[0] === field.playerRowPosition && hatPosition[1] === field.playerColumnPosition) {
+                if (field.hatRowPosition === field.playerRowPosition && field.hatColumnPosition === field.playerColumnPosition) {
                     failure = true;
                     break;
                 }
@@ -296,6 +264,8 @@ describe('Field', () => {
 
             //verify
             assert.strictEqual(field.gameGrid[defaultHatRowPosition][defaultHatColumnPosition], hat);
+            assert.strictEqual(field.hatRowPosition, defaultHatRowPosition);
+            assert.strictEqual(field.hatColumnPosition, defaultHatColumnPosition);
         })
     })
 })

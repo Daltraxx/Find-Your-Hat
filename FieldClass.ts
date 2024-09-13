@@ -15,6 +15,8 @@ class Field {
     gameGrid: null | string[][];
     playerRowPosition: number;
     playerColumnPosition: number;
+    hatRowPosition: number;
+    hatColumnPosition: number;
     fieldHeight: number;
     fieldWidth: number;
     gameActive: boolean;
@@ -22,10 +24,12 @@ class Field {
     hardMode: boolean;
     holesHidden: boolean;
     
-    constructor(gameGrid = null) {
+    constructor(gameGrid : null | string[][]) {
         this.gameGrid = gameGrid;
         this.playerRowPosition = 0;
         this.playerColumnPosition = 0;
+        this.hatRowPosition = this.fieldHeight - 1;
+        this.hatColumnPosition = this.fieldWidth - 2;
         this.fieldHeight = 0;
         this.fieldWidth = 0;
         this.gameActive = false;
@@ -42,6 +46,36 @@ class Field {
         let row = Math.floor(Math.random() * fieldHeight);
         let column = Math.floor(Math.random() * fieldWidth);
         return [row, column];
+    }
+
+    getHatPosition() {
+        if (this.gameGrid === null) {
+            throw new Error('Game Grid must already be provided.');
+        }
+
+        for (let i = 0; i < this.gameGrid.length; i++) {
+            for (let j = 0; j < this.gameGrid[i].length; j++) {
+                if (this.gameGrid[i][j] === Character.Hat) {
+                    [this.hatRowPosition, this.hatColumnPosition] = [i, j];
+                    break;
+                }
+            }
+        }
+    }
+
+    getPlayerPosition() {
+        if (this.gameGrid === null) {
+            throw new Error('Game Grid must already be provided.');
+        }
+
+        for (let i = 0; i < this.gameGrid.length; i++) {
+            for (let j = 0; j < this.gameGrid[i].length; j++) {
+                if (this.gameGrid[i][j] === Character.Path) {
+                    [this.playerRowPosition, this.playerColumnPosition] = [i, j];
+                    break;
+                }
+            }
+        }
     }
 
     generateField(fieldHeight : number, fieldWidth : number, percentageHoles : number, playerRandom : boolean = false, hatRandom : boolean = false) {
@@ -64,19 +98,18 @@ class Field {
         field[this.playerRowPosition][this.playerColumnPosition] = Character.Path;
         
         //set hat in random spot if hatRandom is true, making sure it's not same spot as player
-        let [hatRow, hatColumn] = [fieldHeight - 1, fieldWidth - 2];
         if (hatRandom) {
             do {
-                [hatRow, hatColumn] = this.getKeyPosition(fieldHeight, fieldWidth);
-            } while (hatRow === this.playerRowPosition && hatColumn === this.playerColumnPosition);
+                [this.hatRowPosition, this.hatColumnPosition] = this.getKeyPosition(fieldHeight, fieldWidth);
+            } while (this.hatRowPosition === this.playerRowPosition && this.hatColumnPosition === this.playerColumnPosition);
+        } else {
+            [this.hatRowPosition, this.hatColumnPosition] = [fieldHeight - 1, fieldWidth - 2];
         }
         
-        field[hatRow][hatColumn] = Character.Hat;
-        
-        
-        let holeCount = 0;
+        field[this.hatRowPosition][this.hatColumnPosition] = Character.Hat;
         
         //randomly select spots to be holes if spot is already field character
+        let holeCount = 0;
         for (let row = 0; row < fieldHeight; row++) {
             for (let column = 0; column < fieldWidth; column++) {
                 if (field[row][column] === Character.Field) {
