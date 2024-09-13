@@ -221,12 +221,13 @@ describe('Field', () => {
         it('never sets the hat and the player in the same position when "hatRandom" and "playerRandom" are set to true', () => {
             //setup
             hatRandom = true;
+            playerRandom = true;
             fieldHeight = 2;
             fieldWidth = 1;
             let failure = false;
             let hatPosition = [];
             //exercise
-            for (let i = 0; i < 3; i++) {
+            for (let i = 0; i < 10; i++) {
                 //if resulting position is the default position 3 times, conclude randomization of hat position is failing
                 field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
 
@@ -239,9 +240,44 @@ describe('Field', () => {
                         }
                     }
                 }
-                console.log(`Hat position: ${hatPosition[0]}, ${hatPosition[1]}; Player position: ${field.playerRowPosition}, ${field.playerColumnPosition}`);
+                 
                 if (hatPosition[0] === field.playerRowPosition && hatPosition[1] === field.playerColumnPosition) {
                     failure = true;
+                    break;
+                }
+
+            }
+
+            //verify
+            assert.strictEqual(failure, false);
+        })
+
+        it('never sets the hat and the player in the same position when "hatRandom" is set to true and "playerRandom" is set to false', () => {
+            //setup
+            hatRandom = true;
+            playerRandom = false;
+            fieldHeight = 2;
+            fieldWidth = 1;
+            let failure = false;
+            let hatPosition = [];
+            //exercise
+            for (let i = 0; i < 10; i++) {
+                //if resulting position is the default position 3 times, conclude randomization of hat position is failing
+                field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+
+                //get hat position (use method once instead once it's defined)
+                for (let i = 0; i < field.gameGrid.length; i++) {
+                    for (let j = 0; j < field.gameGrid[i].length; j++) {
+                        if (field.gameGrid[i][j] === hat) {
+                            hatPosition = [i, j];
+                            break;
+                        }
+                    }
+                }
+                 
+                if (hatPosition[0] === field.playerRowPosition && hatPosition[1] === field.playerColumnPosition) {
+                    failure = true;
+                    break;
                 }
 
             }
