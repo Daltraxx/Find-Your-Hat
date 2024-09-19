@@ -118,6 +118,47 @@ describe('Field', () => {
         })
     })
 
+    describe('.getHatPosition', () => {
+
+        let field;
+        beforeEach(() => {
+            field = new Field();
+
+            //generate and assign gameGrid for field instance
+            const fieldHeight = 10;
+            const fieldWidth = 50;
+            const percentageHoles = 20;
+            const playerRandom = true;
+            const hatRandom = true;
+            field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+            
+            hat = '^';
+        })
+
+        it('throws an error the field instance\'s gameGrid property is null', () => {
+            //setup
+            field.gameGrid = null;
+
+            //exercise
+            const result = () => field.getHatPosition();
+
+            //verify
+            assert.throws(result, /Game Grid must already be provided/);
+        })
+
+        it('sets the instance\'s hatRowPosition and hatColumnPosition with the correct values when called', () => {
+            //setup
+            field.getHatPosition();
+
+            //exercise
+            const result = field.gameGrid[field.hatRowPosition][field.hatColumnPosition];
+
+            //verify
+            assert.strictEqual(result, hat);
+        })
+    })
+
+    //check to make sure testing is complete for generate field
     describe('.generateField', () => {
 
         let field, fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom, hat, hole, fieldCharacter, pathCharacter;

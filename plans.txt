@@ -1,2 +1,3 @@
 - fix game when field in file is used
 - specify types of return values for methods
+- have generateField automatically set gameGrid for instance
