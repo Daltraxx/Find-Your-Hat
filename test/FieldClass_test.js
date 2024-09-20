@@ -198,6 +198,46 @@ describe('Field', () => {
         })
     })
 
+    describe('.setFieldDimensions', () => {
+
+        let field;
+        beforeEach(() => {
+            field = new Field();
+        })
+        
+        it('throws an error if the field instance\'s gameGrid property is undefined', () => {
+            //setup
+            field.gameGrid = undefined;
+
+            //exercise
+            const result = () => field.setFieldDimensions();
+
+            //verify
+            assert.throws(result, /Game Grid must already be provided/);
+        })
+
+        it('correctly sets the field\'s dimensions when called and a custom game field has been provided', () => {
+            //setup
+            field.gameGrid = [
+                ['*', '░', 'O'],
+                ['░', 'O', '░'],
+                ['░', '^', '░']
+            ];
+            const expectedFieldWidth = field.gameGrid[0].length;
+            const expectedFieldHeight = field.gameGrid.length;
+
+            //exercise
+            field.setFieldDimensions();
+            const fieldWidthResult = field.fieldWidth;
+            const fieldHeightResult = field.fieldHeight;
+            
+
+            //verify
+            assert.strictEqual(expectedFieldWidth, fieldWidthResult);
+            assert.strictEqual(expectedFieldHeight, fieldHeightResult);
+        })
+    })
+
     //check to make sure testing is complete for generate field
     describe('.generateField', () => {
 
