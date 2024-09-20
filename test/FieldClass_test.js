@@ -238,6 +238,43 @@ describe('Field', () => {
         })
     })
 
+    describe('.setHoles', () => {
+
+        let field;
+        beforeEach(() => {
+            field = new Field();
+        })
+        
+        it('throws an error if the field instance\'s gameGrid property is undefined', () => {
+            //setup
+            field.gameGrid = undefined;
+
+            //exercise
+            const result = () => field.setHoles();
+
+            //verify
+            assert.throws(result, /Game Grid must already be provided/);
+        })
+
+        it('correctly sets the field\'s hole positions when called and a custom game field has been provided', () => {
+            //setup
+            field.gameGrid = [
+                ['*', '░', 'O'],
+                ['░', 'O', 'O'],
+                ['░', '^', 'O']
+            ];
+            const expectedHolePositions = [[0, 2], [1, 1], [1, 2], [2, 2]];
+
+            //exercise
+            field.setHoles();
+            const resultHolePositions = field.holes;
+            
+
+            //verify
+            assert.deepEqual(expectedHolePositions, resultHolePositions);
+        })
+    })
+
     //check to make sure testing is complete for generate field
     describe('.generateField', () => {
 
