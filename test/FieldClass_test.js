@@ -118,7 +118,7 @@ describe('Field', () => {
         })
     })
 
-    describe('.getHatPosition', () => {
+    describe('.setHatPosition', () => {
 
         let field;
         beforeEach(() => {
@@ -140,7 +140,7 @@ describe('Field', () => {
             field.gameGrid = null;
 
             //exercise
-            const result = () => field.getHatPosition();
+            const result = () => field.setHatPosition();
 
             //verify
             assert.throws(result, /Game Grid must already be provided/);
@@ -148,7 +148,7 @@ describe('Field', () => {
 
         it('sets the instance\'s hatRowPosition and hatColumnPosition with the correct values when called', () => {
             //setup
-            field.getHatPosition();
+            field.setHatPosition();
 
             //exercise
             const result = field.gameGrid[field.hatRowPosition][field.hatColumnPosition];

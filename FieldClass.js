@@ -31,7 +31,7 @@ class Field {
         let column = Math.floor(Math.random() * fieldWidth);
         return [row, column];
     }
-    getHatPosition() {
+    setHatPosition() {
         if (this.gameGrid === null) {
             throw new Error('Game Grid must already be provided.');
         }
@@ -44,7 +44,7 @@ class Field {
             }
         }
     }
-    getPlayerPosition() {
+    setPlayerPosition() {
         if (this.gameGrid === null) {
             throw new Error('Game Grid must already be provided.');
         }
