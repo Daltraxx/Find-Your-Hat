@@ -53,10 +53,10 @@ class Field {
             throw new Error('Game Grid must already be provided.');
         }
 
-        for (let i = 0; i < this.gameGrid.length; i++) {
-            for (let j = 0; j < this.gameGrid[i].length; j++) {
-                if (this.gameGrid[i][j] === Character.Hat) {
-                    [this.hatRowPosition, this.hatColumnPosition] = [i, j];
+        for (let row = 0; row < this.gameGrid.length; row++) {
+            for (let column = 0; column < this.gameGrid[row].length; column++) {
+                if (this.gameGrid[row][column] === Character.Hat) {
+                    [this.hatRowPosition, this.hatColumnPosition] = [row, column];
                     break;
                 }
             }
@@ -68,11 +68,34 @@ class Field {
             throw new Error('Game Grid must already be provided.');
         }
 
-        for (let i = 0; i < this.gameGrid.length; i++) {
-            for (let j = 0; j < this.gameGrid[i].length; j++) {
-                if (this.gameGrid[i][j] === Character.Path) {
-                    [this.playerRowPosition, this.playerColumnPosition] = [i, j];
+        for (let row = 0; row < this.gameGrid.length; row++) {
+            for (let column = 0; column < this.gameGrid[row].length; column++) {
+                if (this.gameGrid[row][column] === Character.Path) {
+                    [this.playerRowPosition, this.playerColumnPosition] = [row, column];
                     break;
+                }
+            }
+        }
+    }
+
+    setFieldDimensions() {
+        if (this.gameGrid === undefined) {
+            throw new Error('Game Grid must already be provided.');
+        }
+
+        this.fieldHeight = this.gameGrid.length;
+        this.fieldWidth = this.gameGrid[0].length;
+    }
+
+    setHoles() {
+        if (this.gameGrid === undefined) {
+            throw new Error('Game Grid must already be provided.');
+        }
+
+        for (let row = 0; row < this.gameGrid.length; row++) {
+            for (let column = 0; column < this.gameGrid[row].length; column++) {
+                if (this.gameGrid[row][column] === Character.Hole) {
+                    this.holes.push([row, column]);
                 }
             }
         }
@@ -130,57 +153,78 @@ class Field {
         return field;
     }
 
-    playGame() {
-        //if no field is provided, ask player if they want to define settings for one
-        if (this.gameGrid === undefined) {
-            let hardMode = prompt('Hard mode? Enter "y" or "n" >> ');
-            if (hardMode === 'y') {
-                this.hardMode = true;
-                console.log('Game is set to Hard (holes are hidden after the first move).');
-            } else {
-                console.log('Game set to normal (holes are always visible).');
-            }
-
-            let makeCustomField = prompt('Would you like to define values for a custom field? Enter "y" or "n" >> ');
-            switch (makeCustomField) {
-                case 'y':
-                    
-                    let fieldHeight : number = Math.floor(Number(prompt('Enter an integer for the field height >> ')));
-                    while (isNaN(fieldHeight) || fieldHeight < 2) {
-                        fieldHeight = Math.floor(Number(prompt('Please enter a valid whole number greater than 1 >> ')));
-                    }
-
-                    let fieldWidth : number = Math.floor(Number(prompt('Enter an integer for the field width >> ')));
-                    while (isNaN(fieldWidth) || fieldWidth < 2) {
-                        fieldWidth = Math.floor(Number(prompt('Please enter a valid whole number greater than 1 >> ')));
-                    }
-
-                    let percentageHoles : number = Number(prompt('Enter an integer for the percentage of the field that will be holes >> '));
-                    while (isNaN(percentageHoles)) {
-                        percentageHoles = Number(prompt('Please enter a valid number >> '));
-                    }
-
-                    let playerRandom : string | boolean | null = prompt('Should the player\'s starting location be random? Enter "y" or "n" >> ');
-                    while (playerRandom !== 'y' && playerRandom !== 'n') {
-                        playerRandom = prompt('Please enter "y" or "n" >> ');
-                    }
-                    playerRandom === 'y' ? playerRandom = true : playerRandom = false;
+    getUserFieldValues() {
+        let makeCustomField = prompt('Would you like to define values for a custom field? Enter "y" or "n" >> ');
+        switch (makeCustomField) {
+            case 'y':
                 
-                    let hatRandom : string | boolean | null = prompt('Should the hat\'s location be random? Enter "y" or "n" >> ');
-                    while (hatRandom !== 'y' && hatRandom !== 'n') {
-                        hatRandom = prompt('Please enter "y" or "n" >> ');
-                    }
-                    hatRandom === 'y' ? hatRandom = true : hatRandom = false;
+                let fieldHeight : number = Math.floor(Number(prompt('Enter an integer for the field height >> ')));
+                while (isNaN(fieldHeight) || fieldHeight < 2) {
+                    fieldHeight = Math.floor(Number(prompt('Please enter a valid whole number greater than 1 >> ')));
+                }
 
-                    this.gameGrid = this.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
-                    break;
-                case 'n':
-                    this.hardMode ? this.gameGrid = this.generateField(5, 10, 15) : this.gameGrid = this.generateField(10, 20, 15);
-                    break;
-                default:
-                    console.log('Invalid input. Starting game with predetermined field settings.');
-                    this.hardMode ? this.gameGrid = this.generateField(5, 10, 15) : this.gameGrid = this.generateField(10, 20, 15);                   
-            }
+                let fieldWidth : number = Math.floor(Number(prompt('Enter an integer for the field width >> ')));
+                while (isNaN(fieldWidth) || fieldWidth < 2) {
+                    fieldWidth = Math.floor(Number(prompt('Please enter a valid whole number greater than 1 >> ')));
+                }
+
+                let percentageHoles : number = Number(prompt('Enter an integer for the percentage of the field that will be holes >> '));
+                while (isNaN(percentageHoles)) {
+                    percentageHoles = Number(prompt('Please enter a valid number >> '));
+                }
+
+                let playerRandom : string | boolean | null = prompt('Should the player\'s starting location be random? Enter "y" or "n" >> ');
+                while (playerRandom !== 'y' && playerRandom !== 'n') {
+                    playerRandom = prompt('Please enter "y" or "n" >> ');
+                }
+                playerRandom === 'y' ? playerRandom = true : playerRandom = false;
+            
+                let hatRandom : string | boolean | null = prompt('Should the hat\'s location be random? Enter "y" or "n" >> ');
+                while (hatRandom !== 'y' && hatRandom !== 'n') {
+                    hatRandom = prompt('Please enter "y" or "n" >> ');
+                }
+                hatRandom === 'y' ? hatRandom = true : hatRandom = false;
+
+                this.gameGrid = this.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+                break;
+            case 'n':
+                this.hardMode ? this.gameGrid = this.generateField(5, 10, 15) : this.gameGrid = this.generateField(10, 20, 15);
+                break;
+            default:
+                console.log('Invalid input. Starting game with predetermined field settings.');
+                this.hardMode ? this.gameGrid = this.generateField(5, 10, 15) : this.gameGrid = this.generateField(10, 20, 15);                   
+        }
+    }
+
+    playGame() {
+        let useProvidedField = prompt('Enter "1" to randomly generate a field, or "2" to use one in this file >> ');
+        switch (useProvidedField) {
+            case '1':
+                this.getUserFieldValues();
+                break;
+
+            case '2':
+                this.setFieldDimensions();
+                this.setHatPosition();
+                this.setPlayerPosition();
+                this.setHoles();
+                break;
+
+            default:
+                console.log('Invalid input. Using field in file.');
+                this.setFieldDimensions();
+                this.setHatPosition();
+                this.setPlayerPosition();
+                this.setHoles();
+                
+        }
+        
+        let hardMode = prompt('Hard mode? Enter "y" or "n" >> ');
+        if (hardMode === 'y') {
+            this.hardMode = true;
+            console.log('Game is set to Hard (holes are hidden after the first move).');
+        } else {
+            console.log('Game set to normal (holes are always visible).');
         }
 
         console.log("Select a WASD control and press enter to navigate the map and find your hat!");
