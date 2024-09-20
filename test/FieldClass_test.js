@@ -135,7 +135,7 @@ describe('Field', () => {
             hat = '^';
         })
 
-        it('throws an error the field instance\'s gameGrid property is undefined', () => {
+        it('throws an error if the field instance\'s gameGrid property is undefined', () => {
             //setup
             field.gameGrid = undefined;
 
@@ -155,6 +155,46 @@ describe('Field', () => {
 
             //verify
             assert.strictEqual(result, hat);
+        })
+    })
+
+    describe('.setPlayerPosition', () => {
+
+        let field, player;
+        beforeEach(() => {
+            field = new Field();
+
+            //generate and assign gameGrid for field instance
+            const fieldHeight = 10;
+            const fieldWidth = 50;
+            const percentageHoles = 20;
+            const playerRandom = true;
+            const hatRandom = true;
+            field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+            
+            player = '*';
+        })
+
+        it('throws an error if the field instance\'s gameGrid property is undefined', () => {
+            //setup
+            field.gameGrid = undefined;
+
+            //exercise
+            const result = () => field.setPlayerPosition();
+
+            //verify
+            assert.throws(result, /Game Grid must already be provided/);
+        })
+
+        it('sets the instance\'s playerRowPosition and playerColumnPosition with the correct values when called', () => {
+            //setup
+            field.setPlayerPosition();
+
+            //exercise
+            const result = field.gameGrid[field.playerRowPosition][field.playerColumnPosition];
+
+            //verify
+            assert.strictEqual(result, player);
         })
     })
 
