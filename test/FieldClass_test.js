@@ -135,9 +135,9 @@ describe('Field', () => {
             hat = '^';
         })
 
-        it('throws an error the field instance\'s gameGrid property is null', () => {
+        it('throws an error the field instance\'s gameGrid property is undefined', () => {
             //setup
-            field.gameGrid = null;
+            field.gameGrid = undefined;
 
             //exercise
             const result = () => field.setHatPosition();

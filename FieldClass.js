@@ -32,7 +32,7 @@ class Field {
         return [row, column];
     }
     setHatPosition() {
-        if (this.gameGrid === null) {
+        if (this.gameGrid === undefined) {
             throw new Error('Game Grid must already be provided.');
         }
         for (let i = 0; i < this.gameGrid.length; i++) {
@@ -45,7 +45,7 @@ class Field {
         }
     }
     setPlayerPosition() {
-        if (this.gameGrid === null) {
+        if (this.gameGrid === undefined) {
             throw new Error('Game Grid must already be provided.');
         }
         for (let i = 0; i < this.gameGrid.length; i++) {
@@ -103,7 +103,7 @@ class Field {
     }
     playGame() {
         //if no field is provided, ask player if they want to define settings for one
-        if (this.gameGrid === null) {
+        if (this.gameGrid === undefined) {
             let hardMode = prompt('Hard mode? Enter "y" or "n" >> ');
             if (hardMode === 'y') {
                 this.hardMode = true;
@@ -154,7 +154,7 @@ class Field {
         }
     }
     printField() {
-        if (this.gameGrid === null) {
+        if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
         }
@@ -189,7 +189,7 @@ class Field {
     }
     //for use when this.hardMode is set to true
     hideHoles() {
-        if (this.gameGrid === null) {
+        if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
         }
@@ -199,7 +199,7 @@ class Field {
         this.holesHidden = true;
     }
     move(direction) {
-        if (this.gameGrid === null) {
+        if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
         }
@@ -221,7 +221,7 @@ class Field {
         }
     }
     moveleft() {
-        if (this.gameGrid === null) {
+        if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
         }
@@ -233,7 +233,7 @@ class Field {
         this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = '*';
     }
     moveRight() {
-        if (this.gameGrid === null) {
+        if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
         }
@@ -245,7 +245,7 @@ class Field {
         this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = '*';
     }
     moveUp() {
-        if (this.gameGrid === null) {
+        if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
         }
@@ -257,7 +257,7 @@ class Field {
         this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = '*';
     }
     moveDown() {
-        if (this.gameGrid === null) {
+        if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
         }
@@ -269,7 +269,7 @@ class Field {
         this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = '*';
     }
     meetsEndConditions(newPosition) {
-        if (this.gameGrid === null) {
+        if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
         }
