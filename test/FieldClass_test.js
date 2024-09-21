@@ -425,5 +425,7 @@ describe('Field', () => {
             assert.strictEqual(field.hatRowPosition, defaultHatRowPosition);
             assert.strictEqual(field.hatColumnPosition, defaultHatColumnPosition);
         })
+
+        
     })
 })

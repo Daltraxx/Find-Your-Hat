@@ -76,20 +76,40 @@ class Field {
             }
         }
     }
-    generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom = false, hatRandom = false) {
-        let field = [];
-        this.fieldHeight = fieldHeight;
-        this.fieldWidth = fieldWidth;
+    populateRandomHoles(field, percentageHoles) {
         //function that sets any given location to be a hole based on percentage chance
         const setHole = (percentageHoles) => {
             return Math.random() * 100 <= percentageHoles;
         };
+        //randomly select spots to be holes if spot is already field character
+        let holeCount = 0;
+        for (let row = 0; row < this.fieldHeight; row++) {
+            for (let column = 0; column < this.fieldWidth; column++) {
+                if (field[row][column] === Character.Field) {
+                    if (setHole(percentageHoles)) {
+                        field[row][column] = Character.Hole;
+                        this.holes.push([row, column]);
+                        holeCount++;
+                        //ensure there are never more holes than the percentage allows
+                        if (holeCount >= Math.floor((this.fieldHeight * this.fieldWidth) * (percentageHoles / 100))) {
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom = false, hatRandom = false) {
+        let field = [];
+        this.fieldHeight = fieldHeight;
+        this.fieldWidth = fieldWidth;
         //fill out field with predefined height and width and fill with fieldCharacter
         for (let i = 0; i < fieldHeight; i++) {
             field.push(new Array(fieldWidth).fill(Character.Field));
         }
         //set player position in random spot if playerRandom is true
-        playerRandom ? [this.playerRowPosition, this.playerColumnPosition] = this.getKeyPosition(fieldHeight, fieldWidth) : null;
+        if (playerRandom)
+            [this.playerRowPosition, this.playerColumnPosition] = this.getKeyPosition(fieldHeight, fieldWidth);
         field[this.playerRowPosition][this.playerColumnPosition] = Character.Path;
         //set hat in random spot if hatRandom is true, making sure it's not same spot as player
         if (hatRandom) {
@@ -101,23 +121,8 @@ class Field {
             [this.hatRowPosition, this.hatColumnPosition] = [fieldHeight - 1, fieldWidth - 2];
         }
         field[this.hatRowPosition][this.hatColumnPosition] = Character.Hat;
-        //randomly select spots to be holes if spot is already field character
-        let holeCount = 0;
-        for (let row = 0; row < fieldHeight; row++) {
-            for (let column = 0; column < fieldWidth; column++) {
-                if (field[row][column] === Character.Field) {
-                    if (setHole(percentageHoles)) {
-                        field[row][column] = Character.Hole;
-                        this.holes.push([row, column]);
-                        holeCount++;
-                        //ensure there are never more holes than the percentage allows
-                        if (holeCount >= Math.floor((fieldHeight * fieldWidth) * (percentageHoles / 100))) {
-                            return field;
-                        }
-                    }
-                }
-            }
-        }
+        //set random holes up to allowed percentage
+        this.populateRandomHoles(field, percentageHoles);
         return field;
     }
     getUserFieldValues() {

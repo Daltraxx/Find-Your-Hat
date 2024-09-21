@@ -1,3 +1,4 @@
 - use hashmap for storing hole positions
+- change name of getKeyPosition to getRandomKeyPosition
 - specify types of return values for methods
 - have generateField automatically set gameGrid for instance(?)
