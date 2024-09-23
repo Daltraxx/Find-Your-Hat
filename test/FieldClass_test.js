@@ -275,7 +275,51 @@ describe('Field', () => {
         })
     })
 
-    //check to make sure testing is complete for generate field
+    describe('populateRandomHoles', () => {
+
+        let fieldGame, field, percentageHoles, hat, hole, fieldCharacter, pathCharacter;
+        beforeEach(() => {
+            fieldGame = new Field();
+            field = [
+                ['*', '░', '░'],
+                ['░', '░', '░'],
+                ['░', '░', '░'],
+                ['░', '░', '░'],
+                ['░', '░', '░'],
+                ['░', '^', '░']
+            ];
+            fieldGame.fieldHeight = field.length;
+            fieldGame.fieldWidth = field[0].length;
+            percentageHoles = 20;
+
+            hat = '^';
+            hole = 'O';
+            fieldCharacter = '░';
+            pathCharacter = '*'
+        })
+        
+        it('accurately updates the instance\'s holes property with [row, column] positions as it determines spots to be holes', () => {
+            //setup
+            percentageHoles = 20;
+            fieldGame.populateRandomHoles(field, percentageHoles);
+            const resultHolePositions = fieldGame.holes;
+            const expectedHolePositions = [];
+
+            //exercise
+            for (let row = 0; row < field.length; row++) {
+                for (let column = 0; column < field[row].length; column++) {
+                    if (field[row][column] === hole) {
+                        expectedHolePositions.push([row, column]);
+                    }
+                }
+            }
+            
+            //verify
+            assert.deepEqual(resultHolePositions, expectedHolePositions);
+        })
+    })
+
+    
     describe('.generateField', () => {
 
         let field, fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom, hat, hole, fieldCharacter, pathCharacter;
