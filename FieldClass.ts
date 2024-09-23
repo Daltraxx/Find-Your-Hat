@@ -108,20 +108,22 @@ class Field {
         }
 
         //randomly select spots to be holes if spot is already field character
+        const allowedHoles = Math.floor((this.fieldHeight * this.fieldWidth) * (percentageHoles / 100));
         let holeCount = 0;
-        for (let row = 0; row < this.fieldHeight; row++) {
-            for (let column = 0; column < this.fieldWidth; column++) {
-                if (field[row][column] === Character.Field) {
-                    if (setHole(percentageHoles)) {
-                        field[row][column] = Character.Hole;
-                        this.holes.push([row, column]);
-                        holeCount++;
-                        //ensure there are never more holes than the percentage allows
-                        if (holeCount >= Math.floor((this.fieldHeight * this.fieldWidth) * (percentageHoles / 100))) {
-                            return;
+        while (holeCount < allowedHoles) {
+            for (let row = 0; row < this.fieldHeight; row++) {
+                for (let column = 0; column < this.fieldWidth; column++) {
+                    if (field[row][column] === Character.Field) {
+                        if (setHole(percentageHoles)) {
+                            field[row][column] = Character.Hole;
+                            this.holes.push([row, column]);
+                            holeCount++;
+                            //ensure there are never more holes than the percentage allows
+                            if (holeCount === allowedHoles) {
+                                return;
+                            }
                         }
                     }
-                    
                 }
             }
         }
