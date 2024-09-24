@@ -39,7 +39,7 @@ class Field {
     }
 
     //function for setting random position, to be used for player and hat in generateField
-    getKeyPosition(fieldHeight : number, fieldWidth : number) {
+    getKeyPosition(fieldHeight : number, fieldWidth : number): number[] {
         if (fieldHeight < 1 || fieldWidth < 1) {
             throw new Error('Height and width values cannot be less than 1!');
         }
@@ -48,7 +48,7 @@ class Field {
         return [row, column];
     }
 
-    setHatPosition() {
+    setHatPosition(): void {
         if (this.gameGrid === undefined) {
             throw new Error('Game Grid must already be provided.');
         }
@@ -63,7 +63,7 @@ class Field {
         }
     }
 
-    setPlayerPosition() {
+    setPlayerPosition(): void {
         if (this.gameGrid === undefined) {
             throw new Error('Game Grid must already be provided.');
         }
@@ -78,7 +78,7 @@ class Field {
         }
     }
 
-    setFieldDimensions() {
+    setFieldDimensions(): void {
         if (this.gameGrid === undefined) {
             throw new Error('Game Grid must already be provided.');
         }
@@ -87,7 +87,7 @@ class Field {
         this.fieldWidth = this.gameGrid[0].length;
     }
 
-    setHoles() {
+    setHoles(): void {
         if (this.gameGrid === undefined) {
             throw new Error('Game Grid must already be provided.');
         }
@@ -161,7 +161,7 @@ class Field {
         return field;
     }
 
-    getUserFieldValues() {
+    getUserFieldValues(): void {
         let makeCustomField = prompt('Would you like to define values for a custom field? Enter "y" or "n" >> ');
         switch (makeCustomField) {
             case 'y':
@@ -204,7 +204,7 @@ class Field {
         }
     }
 
-    playGame() {
+    playGame(): void {
         let useProvidedField = prompt('Enter "1" to randomly generate a field, or "2" to use one in this file >> ');
         switch (useProvidedField) {
             case '1':
@@ -242,7 +242,7 @@ class Field {
         }
     }
 
-    printField() {
+    printField(): void {
         if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
@@ -252,7 +252,7 @@ class Field {
         }
     }
 
-    printVictory() {
+    printVictory(): void {
         const victoryArray : string[][] = 
             [
                 ['*', '░', '*', '░', '░', '░', '░', '░', '░', '░', '*', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'],
@@ -272,7 +272,7 @@ class Field {
         }
     }
 
-    playTurn() {
+    playTurn(): void {
         this.printField();
         if (this.hardMode && !this.holesHidden) {
             this.hideHoles();
@@ -282,7 +282,7 @@ class Field {
     }
 
     //for use when this.hardMode is set to true
-    hideHoles() {
+    hideHoles(): void {
         if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
@@ -294,7 +294,7 @@ class Field {
         this.holesHidden = true;
     }
 
-    move(direction : string | null) {
+    move(direction : string | null): void {
         if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
@@ -318,7 +318,7 @@ class Field {
         }
     }
 
-    moveleft() {
+    moveleft(): void {
         if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
@@ -332,7 +332,7 @@ class Field {
         this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = '*';
     }
 
-    moveRight() {
+    moveRight(): void {
         if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
@@ -347,7 +347,7 @@ class Field {
         
     }
 
-    moveUp() {
+    moveUp(): void {
         if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
@@ -362,7 +362,7 @@ class Field {
 
     }
         
-    moveDown() {
+    moveDown(): void {
         if (this.gameGrid === undefined) {
             console.log('This method cannot be used until a game grid has been provided');
             return;
@@ -377,10 +377,9 @@ class Field {
 
     }
 
-    meetsEndConditions(newPosition : number[]) {
+    meetsEndConditions(newPosition : number[]): boolean {
         if (this.gameGrid === undefined) {
-            console.log('This method cannot be used until a game grid has been provided');
-            return;
+            throw new Error('This method cannot be used until a game grid has been provided');
         }
 
         let [newPositionRow, newPositionColumn] = newPosition;
@@ -400,7 +399,7 @@ class Field {
         }
     }
 
-    gameOver(reason : string) {
+    gameOver(reason : string): void {
         switch (reason) {
             case 'out': 
                 console.log('You went out of bounds! Game Over.');
