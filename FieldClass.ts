@@ -284,8 +284,7 @@ class Field {
     //for use when this.hardMode is set to true
     hideHoles(): void {
         if (this.gameGrid === undefined) {
-            console.log('This method cannot be used until a game grid has been provided');
-            return;
+            throw new Error('Game Grid must already be provided');
         }
 
         for (let [row, column] of this.holes) {

@@ -497,5 +497,59 @@ describe('Field', () => {
         
     })
 
-    describ
+    describe('hideHoles', () => {
+        let fieldGame, fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom, hat, hole, fieldCharacter, pathCharacter;
+        beforeEach(() => {
+            fieldGame = new Field();
+
+            fieldHeight = 10;
+            fieldWidth = 10;
+            percentageHoles = 50;
+            playerRandom = true;
+            hatRandom = true;
+
+            hat = '^';
+            hole = 'O';
+            fieldCharacter = '░';
+            pathCharacter = '*';
+        })
+
+        it('throws an error if called and no gameGrid has been defined', () => {
+            //setup
+            fieldGame.gameGrid = undefined;
+
+            //exercise
+            const result = () => fieldGame.hideHoles();
+
+            //verify
+            assert.throws(result, /Game Grid must already be provided/);
+        })
+
+        it('hides all holes and only holes by replacing them with field characters', () => {
+            //setup
+            fieldGame.gameGrid = fieldGame.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+            let expectedPathCharacterCount = 1;
+            let expectedHatCount = 1;
+            let expectedHoleCount = 0;
+
+            //exercise
+            fieldGame.hideHoles();
+            let resultPathCharacterCount = 0;
+            let resultHatCount = 0;
+            let resultHoleCount = 0;
+            for (let row of fieldGame.gameGrid) {
+                for (let column of row) {
+                    if (column === pathCharacter) resultPathCharacterCount++;
+                    if (column === hat) resultHatCount++;
+                    if (column === hole) resultHoleCount++;
+                }
+            }
+
+            //verify
+            assert.strictEqual(expectedPathCharacterCount, resultPathCharacterCount);
+            assert.strictEqual(expectedHatCount, resultHatCount);
+            assert.strictEqual(expectedHoleCount, resultHoleCount);
+
+        })
+    })
 })

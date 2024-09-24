@@ -234,8 +234,7 @@ class Field {
     //for use when this.hardMode is set to true
     hideHoles() {
         if (this.gameGrid === undefined) {
-            console.log('This method cannot be used until a game grid has been provided');
-            return;
+            throw new Error('Game Grid must already be provided');
         }
         for (let [row, column] of this.holes) {
             this.gameGrid[row][column] = Character.Field;
@@ -314,8 +313,7 @@ class Field {
     }
     meetsEndConditions(newPosition) {
         if (this.gameGrid === undefined) {
-            console.log('This method cannot be used until a game grid has been provided');
-            return;
+            throw new Error('This method cannot be used until a game grid has been provided');
         }
         let [newPositionRow, newPositionColumn] = newPosition;
         let stringifiedPosition = JSON.stringify(newPosition);
