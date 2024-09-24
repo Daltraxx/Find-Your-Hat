@@ -317,6 +317,26 @@ describe('Field', () => {
             //verify
             assert.deepEqual(resultHolePositions, expectedHolePositions);
         })
+
+        it('sets an amount of holes equal to the floored percentage of holes allowed by the passed percentageHoles parameter', () => {
+            //setup
+            percentageHoles = 60;
+            fieldGame.populateRandomHoles(field, percentageHoles);
+            let resultNumberHoles = 0;
+            const expectedNumberHoles = Math.floor((fieldGame.fieldHeight * fieldGame.fieldWidth) * (percentageHoles / 100)); //10 holes
+
+            //exercise
+            for (let row = 0; row < field.length; row++) {
+                for (let column = 0; column < field[row].length; column++) {
+                    if (field[row][column] === hole) {
+                        resultNumberHoles++;
+                    }
+                }
+            }
+            
+            //verify
+            assert.deepEqual(resultNumberHoles, expectedNumberHoles);
+        })
     })
 
     
