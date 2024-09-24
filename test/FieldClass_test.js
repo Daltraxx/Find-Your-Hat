@@ -303,19 +303,24 @@ describe('Field', () => {
             percentageHoles = 20;
             fieldGame.populateRandomHoles(field, percentageHoles);
             const resultHolePositions = fieldGame.holes;
-            const expectedHolePositions = [];
+            let testPass = true;
 
             //exercise
             for (let row = 0; row < field.length; row++) {
                 for (let column = 0; column < field[row].length; column++) {
-                    if (field[row][column] === hole) {
-                        expectedHolePositions.push([row, column]);
+                    let stringifiedPosition = JSON.stringify([row, column]);
+                    if (field[row][column] === hole && !resultHolePositions.find((element) => JSON.stringify(element) === stringifiedPosition)) {
+                        testPass = false;
+                        break;
+                    } else if (field[row][column] !== hole && resultHolePositions.find((element) => JSON.stringify(element) === stringifiedPosition)) {
+                        testPass = false;
+                        break;
                     }
                 }
             }
             
             //verify
-            assert.deepEqual(resultHolePositions, expectedHolePositions);
+            assert.ok(testPass);
         })
 
         it('sets an amount of holes equal to the floored percentage of holes allowed by the passed percentageHoles parameter', () => {
