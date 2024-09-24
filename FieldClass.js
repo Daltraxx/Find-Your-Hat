@@ -237,8 +237,8 @@ class Field {
             console.log('This method cannot be used until a game grid has been provided');
             return;
         }
-        for (let hole of this.holes) {
-            this.gameGrid[hole[0]][hole[1]] = Character.Field;
+        for (let [row, column] of this.holes) {
+            this.gameGrid[row][column] = Character.Field;
         }
         this.holesHidden = true;
     }
