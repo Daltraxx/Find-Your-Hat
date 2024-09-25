@@ -1,12 +1,18 @@
 const assert = require('assert');
 const { Field } = require('../FieldClass');
 
+const playerCharacter = '!';
+const hatCharacter = '^';
+const holeCharacter = 'O';
+const fieldCharacter = '░';
+const pathCharacter = '*';
+
 describe('Field', () => {
     describe('.getKeyPosition', () => {
 
         let field, rowIndex, columnIndex;
         beforeEach(() => {
-            field = new Field();
+            fieldGame = new Field();
             rowIndex = 0;
             columnIndex = 1;
         })
@@ -17,7 +23,7 @@ describe('Field', () => {
             const width = 1;
 
             //exercise
-            const result = field.getKeyPosition(height, width);
+            const result = fieldGame.getKeyPosition(height, width);
 
             //verify
             assert.ok(
@@ -33,7 +39,7 @@ describe('Field', () => {
             const width = 10;
 
             //exercise
-            const result = field.getKeyPosition(height, width);
+            const result = fieldGame.getKeyPosition(height, width);
 
             //verify
             assert.ok(
@@ -49,7 +55,7 @@ describe('Field', () => {
             const width = 100;
 
             //exercise
-            const result = field.getKeyPosition(height, width);
+            const result = fieldGame.getKeyPosition(height, width);
 
             //verify
             assert.ok(
@@ -65,7 +71,7 @@ describe('Field', () => {
             const width = 9;
 
             //exercise
-            const result = field.getKeyPosition(height, width);
+            const result = fieldGame.getKeyPosition(height, width);
 
             //verify
             assert.ok(
@@ -81,7 +87,7 @@ describe('Field', () => {
             const width = 3;
 
             //exercise
-            const result = field.getKeyPosition(height, width);
+            const result = fieldGame.getKeyPosition(height, width);
 
             //verify
             assert.ok(
@@ -97,7 +103,7 @@ describe('Field', () => {
             const width = 10;
 
             //exercise
-            const result = () => field.getKeyPosition(height, width);
+            const result = () => fieldGame.getKeyPosition(height, width);
     
 
             //verify
@@ -110,7 +116,7 @@ describe('Field', () => {
             const width = -1;
 
             //exercise
-            const result = () => field.getKeyPosition(height, width);
+            const result = () => fieldGame.getKeyPosition(height, width);
     
 
             //verify
@@ -120,9 +126,9 @@ describe('Field', () => {
 
     describe('.setHatPosition', () => {
 
-        let field;
+        let fieldGame;
         beforeEach(() => {
-            field = new Field();
+            fieldGame = new Field();
 
             //generate and assign gameGrid for field instance
             const fieldHeight = 10;
@@ -130,17 +136,15 @@ describe('Field', () => {
             const percentageHoles = 20;
             const playerRandom = true;
             const hatRandom = true;
-            field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
-            
-            hat = '^';
+            fieldGame.gameGrid = fieldGame.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
         })
 
         it('throws an error if the field instance\'s gameGrid property is undefined', () => {
             //setup
-            field.gameGrid = undefined;
+            fieldGame.gameGrid = undefined;
 
             //exercise
-            const result = () => field.setHatPosition();
+            const result = () => fieldGame.setHatPosition();
 
             //verify
             assert.throws(result, /Game Grid must already be provided/);
@@ -148,21 +152,21 @@ describe('Field', () => {
 
         it('sets the instance\'s hatRowPosition and hatColumnPosition with the correct values when called', () => {
             //setup
-            field.setHatPosition();
+            fieldGame.setHatPosition();
 
             //exercise
-            const result = field.gameGrid[field.hatRowPosition][field.hatColumnPosition];
+            const result = fieldGame.gameGrid[fieldGame.hatRowPosition][fieldGame.hatColumnPosition];
 
             //verify
-            assert.strictEqual(result, hat);
+            assert.strictEqual(result, hatCharacter);
         })
     })
 
     describe('.setPlayerPosition', () => {
 
-        let field, player;
+        let fieldGame;
         beforeEach(() => {
-            field = new Field();
+            fieldGame = new Field();
 
             //generate and assign gameGrid for field instance
             const fieldHeight = 10;
@@ -170,17 +174,17 @@ describe('Field', () => {
             const percentageHoles = 20;
             const playerRandom = true;
             const hatRandom = true;
-            field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+            fieldGame.gameGrid = fieldGame.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
             
-            player = '*';
+
         })
 
         it('throws an error if the field instance\'s gameGrid property is undefined', () => {
             //setup
-            field.gameGrid = undefined;
+            fieldGame.gameGrid = undefined;
 
             //exercise
-            const result = () => field.setPlayerPosition();
+            const result = () => fieldGame.setPlayerPosition();
 
             //verify
             assert.throws(result, /Game Grid must already be provided/);
@@ -188,29 +192,29 @@ describe('Field', () => {
 
         it('sets the instance\'s playerRowPosition and playerColumnPosition with the correct values when called', () => {
             //setup
-            field.setPlayerPosition();
+            fieldGame.setPlayerPosition();
 
             //exercise
-            const result = field.gameGrid[field.playerRowPosition][field.playerColumnPosition];
+            const result = fieldGame.gameGrid[fieldGame.playerRowPosition][fieldGame.playerColumnPosition];
 
             //verify
-            assert.strictEqual(result, player);
+            assert.strictEqual(result, playerCharacter);
         })
     })
 
     describe('.setFieldDimensions', () => {
 
-        let field;
+        let fieldGame;
         beforeEach(() => {
-            field = new Field();
+            fieldGame = new Field();
         })
         
         it('throws an error if the field instance\'s gameGrid property is undefined', () => {
             //setup
-            field.gameGrid = undefined;
+            fieldGame.gameGrid = undefined;
 
             //exercise
-            const result = () => field.setFieldDimensions();
+            const result = () => fieldGame.setFieldDimensions();
 
             //verify
             assert.throws(result, /Game Grid must already be provided/);
@@ -218,18 +222,18 @@ describe('Field', () => {
 
         it('correctly sets the field\'s dimensions when called and a custom game field has been provided', () => {
             //setup
-            field.gameGrid = [
+            fieldGame.gameGrid = [
                 ['*', '░', 'O'],
                 ['░', 'O', '░'],
                 ['░', '^', '░']
             ];
-            const expectedFieldWidth = field.gameGrid[0].length;
-            const expectedFieldHeight = field.gameGrid.length;
+            const expectedFieldWidth = fieldGame.gameGrid[0].length;
+            const expectedFieldHeight = fieldGame.gameGrid.length;
 
             //exercise
-            field.setFieldDimensions();
-            const fieldWidthResult = field.fieldWidth;
-            const fieldHeightResult = field.fieldHeight;
+            fieldGame.setFieldDimensions();
+            const fieldWidthResult = fieldGame.fieldWidth;
+            const fieldHeightResult = fieldGame.fieldHeight;
             
 
             //verify
@@ -240,17 +244,17 @@ describe('Field', () => {
 
     describe('.setHoles', () => {
 
-        let field;
+        let fieldGame;
         beforeEach(() => {
-            field = new Field();
+            fieldGame = new Field();
         })
         
         it('throws an error if the field instance\'s gameGrid property is undefined', () => {
             //setup
-            field.gameGrid = undefined;
+            fieldGame.gameGrid = undefined;
 
             //exercise
-            const result = () => field.setHoles();
+            const result = () => fieldGame.setHoles();
 
             //verify
             assert.throws(result, /Game Grid must already be provided/);
@@ -258,7 +262,7 @@ describe('Field', () => {
 
         it('correctly sets the field\'s hole positions when called and a custom game field has been provided', () => {
             //setup
-            field.gameGrid = [
+            fieldGame.gameGrid = [
                 ['*', '░', 'O'],
                 ['░', 'O', 'O'],
                 ['░', '^', 'O']
@@ -266,8 +270,8 @@ describe('Field', () => {
             const expectedHolePositions = [[0, 2], [1, 1], [1, 2], [2, 2]];
 
             //exercise
-            field.setHoles();
-            const resultHolePositions = field.holes;
+            fieldGame.setHoles();
+            const resultHolePositions = fieldGame.holes;
             
 
             //verify
@@ -277,7 +281,7 @@ describe('Field', () => {
 
     describe('populateRandomHoles', () => {
 
-        let fieldGame, field, percentageHoles, hat, hole, fieldCharacter, pathCharacter;
+        let fieldGame, field, percentageHoles;
         beforeEach(() => {
             fieldGame = new Field();
             field = [
@@ -292,10 +296,7 @@ describe('Field', () => {
             fieldGame.fieldWidth = field[0].length;
             percentageHoles = 20;
 
-            hat = '^';
-            hole = 'O';
-            fieldCharacter = '░';
-            pathCharacter = '*'
+            
         })
         
         it('accurately updates the instance\'s holes property with [row, column] positions as it determines spots to be holes', () => {
@@ -309,10 +310,10 @@ describe('Field', () => {
             for (let row = 0; row < field.length; row++) {
                 for (let column = 0; column < field[row].length; column++) {
                     let stringifiedPosition = JSON.stringify([row, column]);
-                    if (field[row][column] === hole && !resultHolePositions.find((element) => JSON.stringify(element) === stringifiedPosition)) {
+                    if (field[row][column] === holeCharacter && !resultHolePositions.find((element) => JSON.stringify(element) === stringifiedPosition)) {
                         testPass = false;
                         break;
-                    } else if (field[row][column] !== hole && resultHolePositions.find((element) => JSON.stringify(element) === stringifiedPosition)) {
+                    } else if (field[row][column] !== holeCharacter && resultHolePositions.find((element) => JSON.stringify(element) === stringifiedPosition)) {
                         testPass = false;
                         break;
                     }
@@ -333,7 +334,7 @@ describe('Field', () => {
             //exercise
             for (let row = 0; row < field.length; row++) {
                 for (let column = 0; column < field[row].length; column++) {
-                    if (field[row][column] === hole) {
+                    if (field[row][column] === holeCharacter) {
                         resultNumberHoles++;
                     }
                 }
@@ -346,20 +347,15 @@ describe('Field', () => {
     
     describe('.generateField', () => {
 
-        let field, fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom, hat, hole, fieldCharacter, pathCharacter;
+        let fieldGame, fieldHeight, fieldWidth, percentageHoles, playerRandom;
         beforeEach(() => {
-            field = new Field();
+            fieldGame = new Field();
             //give method arguments default values. Can reassign as necessary
             fieldHeight = 10;
             fieldWidth = 10;
             percentageHoles = 20;
             playerRandom = true;
             hatRandom = true;
-            //string characters that make up game map
-            hat = '^';
-            hole = 'O';
-            fieldCharacter = '░';
-            pathCharacter = '*';
         })
 
         it('assigns the fieldWidth and fieldHeight arguments to be the fieldHeight and fieldWidth of the Field instance', () => {
@@ -369,9 +365,9 @@ describe('Field', () => {
             const expectedHeight = fieldHeight;
             const expectedWidth = fieldWidth;
             //exercise
-            field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
-            const heightResult = field.fieldHeight;
-            const widthResult = field.fieldWidth;
+            fieldGame.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+            const heightResult = fieldGame.fieldHeight;
+            const widthResult = fieldGame.fieldWidth;
             //verify
             assert.strictEqual(heightResult, expectedHeight);
             assert.strictEqual(widthResult, expectedWidth);
@@ -385,9 +381,9 @@ describe('Field', () => {
             //exercise
             for (let i = 0; i < 3; i++) {
                 //if resulting position is the default position 3 times, conclude randomization of player position is failing
-                field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
-                let playerRowPositionResult = field.playerRowPosition;
-                let playerColumnPositionResult = field.playerColumnPosition;
+                fieldGame.gameGrid = fieldGame.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+                let playerRowPositionResult = fieldGame.playerRowPosition;
+                let playerColumnPositionResult = fieldGame.playerColumnPosition;
 
                 if (playerRowPositionResult === defaultPlayerPosition && playerColumnPositionResult === defaultPlayerPosition) {
                     potentialFailures++;
@@ -397,7 +393,7 @@ describe('Field', () => {
 
             //verify
             assert.ok(potentialFailures <= 3);
-            assert.strictEqual(field.gameGrid[field.playerRowPosition][field.playerColumnPosition], pathCharacter);
+            assert.strictEqual(fieldGame.gameGrid[fieldGame.playerRowPosition][fieldGame.playerColumnPosition], playerCharacter);
         })
 
         it('sets the player in the default starting position (top left) if "playerRandom" is set to false', () => {
@@ -405,10 +401,10 @@ describe('Field', () => {
             playerRandom = false;
             const defaultPlayerPosition = 0;
             //exercise
-            field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+            fieldGame.gameGrid = fieldGame.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
 
             //verify
-            assert.strictEqual(field.gameGrid[defaultPlayerPosition][defaultPlayerPosition], pathCharacter);
+            assert.strictEqual(fieldGame.gameGrid[defaultPlayerPosition][defaultPlayerPosition], playerCharacter);
         })
 
         it('sets the hat in a random position if "hatRandom" is set to true and sets hat character in that position', () => {
@@ -421,9 +417,9 @@ describe('Field', () => {
             //exercise
             for (let i = 0; i < 3; i++) {
                 //if resulting position is the default position 3 times, conclude randomization of hat position is failing
-                field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+                fieldGame.gameGrid = fieldGame.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
 
-                if (field.hatRowPosition === defaultHatRowPosition && field.hatColumnPosition === defaultHatColumnPosition) {
+                if (fieldGame.hatRowPosition === defaultHatRowPosition && fieldGame.hatColumnPosition === defaultHatColumnPosition) {
                     potentialFailures++;
                 }
 
@@ -431,7 +427,7 @@ describe('Field', () => {
 
             //verify
             assert.ok(potentialFailures <= 3);
-            assert.strictEqual(field.gameGrid[field.hatRowPosition][field.hatColumnPosition], hat);
+            assert.strictEqual(fieldGame.gameGrid[fieldGame.hatRowPosition][fieldGame.hatColumnPosition], hatCharacter);
         })
 
         it('never sets the hat and the player in the same position when "hatRandom" and "playerRandom" are set to true', () => {
@@ -443,9 +439,9 @@ describe('Field', () => {
             let failure = false;
             //exercise
             for (let i = 0; i < 10; i++) {
-                field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+                fieldGame.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
                  
-                if (field.hatRowPosition === field.playerRowPosition && field.hatColumnPosition === field.playerColumnPosition) {
+                if (fieldGame.hatRowPosition === fieldGame.playerRowPosition && fieldGame.hatColumnPosition === fieldGame.playerColumnPosition) {
                     failure = true;
                     break;
                 }
@@ -466,10 +462,10 @@ describe('Field', () => {
             //exercise
             for (let i = 0; i < 10; i++) {
                 //if resulting position is the default position 3 times, conclude randomization of hat position is failing
-                field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+                fieldGame.gameGrid = fieldGame.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
 
                  
-                if (field.hatRowPosition === field.playerRowPosition && field.hatColumnPosition === field.playerColumnPosition) {
+                if (fieldGame.hatRowPosition === fieldGame.playerRowPosition && fieldGame.hatColumnPosition === fieldGame.playerColumnPosition) {
                     failure = true;
                     break;
                 }
@@ -486,19 +482,19 @@ describe('Field', () => {
             const defaultHatRowPosition = fieldHeight - 1;
             const defaultHatColumnPosition = fieldWidth - 2;
             //exercise
-            field.gameGrid = field.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
+            fieldGame.gameGrid = fieldGame.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
 
             //verify
-            assert.strictEqual(field.gameGrid[defaultHatRowPosition][defaultHatColumnPosition], hat);
-            assert.strictEqual(field.hatRowPosition, defaultHatRowPosition);
-            assert.strictEqual(field.hatColumnPosition, defaultHatColumnPosition);
+            assert.strictEqual(fieldGame.gameGrid[defaultHatRowPosition][defaultHatColumnPosition], hatCharacter);
+            assert.strictEqual(fieldGame.hatRowPosition, defaultHatRowPosition);
+            assert.strictEqual(fieldGame.hatColumnPosition, defaultHatColumnPosition);
         })
 
         
     })
 
     describe('hideHoles', () => {
-        let fieldGame, fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom, hat, hole, fieldCharacter, pathCharacter;
+        let fieldGame, fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom;
         beforeEach(() => {
             fieldGame = new Field();
 
@@ -507,11 +503,6 @@ describe('Field', () => {
             percentageHoles = 50;
             playerRandom = true;
             hatRandom = true;
-
-            hat = '^';
-            hole = 'O';
-            fieldCharacter = '░';
-            pathCharacter = '*';
         })
 
         it('throws an error if called and no gameGrid has been defined', () => {
@@ -528,27 +519,44 @@ describe('Field', () => {
         it('hides all holes and only holes by replacing them with field characters', () => {
             //setup
             fieldGame.gameGrid = fieldGame.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
-            let expectedPathCharacterCount = 1;
+            let expectedPlayerCount = 1;
             let expectedHatCount = 1;
             let expectedHoleCount = 0;
 
             //exercise
             fieldGame.hideHoles();
-            let resultPathCharacterCount = 0;
+            let resultPlayerCount = 0;
             let resultHatCount = 0;
             let resultHoleCount = 0;
             for (let row of fieldGame.gameGrid) {
                 for (let column of row) {
-                    if (column === pathCharacter) resultPathCharacterCount++;
-                    if (column === hat) resultHatCount++;
-                    if (column === hole) resultHoleCount++;
+                    if (column === playerCharacter) resultPlayerCount++;
+                    if (column === hatCharacter) resultHatCount++;
+                    if (column === holeCharacter) resultHoleCount++;
                 }
             }
 
             //verify
-            assert.strictEqual(expectedPathCharacterCount, resultPathCharacterCount);
+            assert.strictEqual(expectedPlayerCount, resultPlayerCount);
             assert.strictEqual(expectedHatCount, resultHatCount);
             assert.strictEqual(expectedHoleCount, resultHoleCount);
+
+        })
+    })
+
+    describe('move', () => {
+        
+        let fieldGame;
+        beforeEach(() => {
+            fieldGame = new Field();
+            fieldGame.gameGrid = [
+                ['░', '░', '░'],
+                ['░', '*', '░'],
+                ['░', '░', '░']
+            ];
+            fieldGame.setPlayerPosition();
+            pathCharacter = '*';
+
 
         })
     })

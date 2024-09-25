@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const prompt = require('prompt-sync')({ sigint: true });
 var Character;
 (function (Character) {
+    Character["Player"] = "!";
     Character["Hat"] = "^";
     Character["Hole"] = "O";
     Character["Field"] = "\u2591";
@@ -50,7 +51,7 @@ class Field {
         }
         for (let row = 0; row < this.gameGrid.length; row++) {
             for (let column = 0; column < this.gameGrid[row].length; column++) {
-                if (this.gameGrid[row][column] === Character.Path) {
+                if (this.gameGrid[row][column] === Character.Player) {
                     [this.playerRowPosition, this.playerColumnPosition] = [row, column];
                     break;
                 }
@@ -113,7 +114,7 @@ class Field {
         //set player position in random spot if playerRandom is true
         if (playerRandom)
             [this.playerRowPosition, this.playerColumnPosition] = this.getKeyPosition(fieldHeight, fieldWidth);
-        field[this.playerRowPosition][this.playerColumnPosition] = Character.Path;
+        field[this.playerRowPosition][this.playerColumnPosition] = Character.Player;
         //set hat in random spot if hatRandom is true, making sure it's not same spot as player
         if (hatRandom) {
             do {
@@ -272,8 +273,11 @@ class Field {
         if (this.meetsEndConditions(newPosition)) {
             return;
         }
+        //set last position to path
+        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = Character.Path;
+        //set new position to player
         this.playerColumnPosition -= 1;
-        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = '*';
+        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = Character.Player;
     }
     moveRight() {
         if (this.gameGrid === undefined) {
@@ -284,8 +288,9 @@ class Field {
         if (this.meetsEndConditions(newPosition)) {
             return;
         }
+        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = Character.Path;
         this.playerColumnPosition += 1;
-        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = '*';
+        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = Character.Player;
     }
     moveUp() {
         if (this.gameGrid === undefined) {
@@ -296,8 +301,9 @@ class Field {
         if (this.meetsEndConditions(newPosition)) {
             return;
         }
+        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = Character.Path;
         this.playerRowPosition -= 1;
-        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = '*';
+        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = Character.Player;
     }
     moveDown() {
         if (this.gameGrid === undefined) {
@@ -308,8 +314,9 @@ class Field {
         if (this.meetsEndConditions(newPosition)) {
             return;
         }
+        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = Character.Path;
         this.playerRowPosition += 1;
-        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = '*';
+        this.gameGrid[this.playerRowPosition][this.playerColumnPosition] = Character.Player;
     }
     meetsEndConditions(newPosition) {
         if (this.gameGrid === undefined) {
