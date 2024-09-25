@@ -8,7 +8,7 @@ const fieldCharacter = '░';
 const pathCharacter = '*';
 
 describe('Field', () => {
-    describe('.getKeyPosition', () => {
+    describe('.getRandomKeyPosition', () => {
 
         let field, rowIndex, columnIndex;
         beforeEach(() => {
@@ -23,7 +23,7 @@ describe('Field', () => {
             const width = 1;
 
             //exercise
-            const result = fieldGame.getKeyPosition(height, width);
+            const result = fieldGame.getRandomKeyPosition(height, width);
 
             //verify
             assert.ok(
@@ -39,7 +39,7 @@ describe('Field', () => {
             const width = 10;
 
             //exercise
-            const result = fieldGame.getKeyPosition(height, width);
+            const result = fieldGame.getRandomKeyPosition(height, width);
 
             //verify
             assert.ok(
@@ -55,7 +55,7 @@ describe('Field', () => {
             const width = 100;
 
             //exercise
-            const result = fieldGame.getKeyPosition(height, width);
+            const result = fieldGame.getRandomKeyPosition(height, width);
 
             //verify
             assert.ok(
@@ -71,7 +71,7 @@ describe('Field', () => {
             const width = 9;
 
             //exercise
-            const result = fieldGame.getKeyPosition(height, width);
+            const result = fieldGame.getRandomKeyPosition(height, width);
 
             //verify
             assert.ok(
@@ -87,7 +87,7 @@ describe('Field', () => {
             const width = 3;
 
             //exercise
-            const result = fieldGame.getKeyPosition(height, width);
+            const result = fieldGame.getRandomKeyPosition(height, width);
 
             //verify
             assert.ok(
@@ -103,7 +103,7 @@ describe('Field', () => {
             const width = 10;
 
             //exercise
-            const result = () => fieldGame.getKeyPosition(height, width);
+            const result = () => fieldGame.getRandomKeyPosition(height, width);
     
 
             //verify
@@ -116,7 +116,7 @@ describe('Field', () => {
             const width = -1;
 
             //exercise
-            const result = () => fieldGame.getKeyPosition(height, width);
+            const result = () => fieldGame.getRandomKeyPosition(height, width);
     
 
             //verify

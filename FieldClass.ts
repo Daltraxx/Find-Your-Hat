@@ -40,7 +40,7 @@ class Field {
     }
 
     //function for setting random position, to be used for player and hat in generateField
-    getKeyPosition(fieldHeight : number, fieldWidth : number): number[] {
+    getRandomKeyPosition(fieldHeight : number, fieldWidth : number): number[] {
         if (fieldHeight < 1 || fieldWidth < 1) {
             throw new Error('Height and width values cannot be less than 1!');
         }
@@ -141,14 +141,14 @@ class Field {
         }
 
         //set player position in random spot if playerRandom is true
-        if (playerRandom) [this.playerRowPosition, this.playerColumnPosition] = this.getKeyPosition(fieldHeight, fieldWidth);
+        if (playerRandom) [this.playerRowPosition, this.playerColumnPosition] = this.getRandomKeyPosition(fieldHeight, fieldWidth);
         
         field[this.playerRowPosition][this.playerColumnPosition] = Character.Player;
         
         //set hat in random spot if hatRandom is true, making sure it's not same spot as player
         if (hatRandom) {
             do {
-                [this.hatRowPosition, this.hatColumnPosition] = this.getKeyPosition(fieldHeight, fieldWidth);
+                [this.hatRowPosition, this.hatColumnPosition] = this.getRandomKeyPosition(fieldHeight, fieldWidth);
             } while (this.hatRowPosition === this.playerRowPosition && this.hatColumnPosition === this.playerColumnPosition);
         } else {
             [this.hatRowPosition, this.hatColumnPosition] = [fieldHeight - 1, fieldWidth - 2];
