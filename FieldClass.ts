@@ -296,8 +296,7 @@ class Field {
 
     move(direction : string | null): void {
         if (this.gameGrid === undefined) {
-            console.log('This method cannot be used until a game grid has been provided');
-            return;
+            throw new Error('This method cannot be used until a game grid has been provided');
         }
 
         switch (direction) {

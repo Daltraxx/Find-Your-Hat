@@ -546,18 +546,145 @@ describe('Field', () => {
 
     describe('move', () => {
         
-        let fieldGame;
+        let fieldGame, gameMap;
         beforeEach(() => {
             fieldGame = new Field();
             fieldGame.gameGrid = [
                 ['░', '░', '░'],
-                ['░', '*', '░'],
+                ['░', '!', '░'],
                 ['░', '░', '░']
             ];
             fieldGame.setPlayerPosition();
-            pathCharacter = '*';
+            fieldGame.setFieldDimensions();
+        })
 
+        it('moves the player character left one position when the direction parameter is "a" and leaves a path character in the previous position', () => {
+            //setup
+            const expectedPlayerPosition = [1, 0];
+            const expectedPathPosition = [1, 1];
+            
 
+            //exercise
+            fieldGame.move('a');
+            const resultPlayerPosition = [fieldGame.playerRowPosition, fieldGame.playerColumnPosition];
+            const resultPathPosition = [];
+            for (let row = 0; row < fieldGame.gameGrid.length; row++) {
+                for (let column = 0; column < fieldGame.gameGrid[row].length; column++) {
+                    if (fieldGame.gameGrid[row][column] === pathCharacter) {
+                        [resultPathPosition[0], resultPathPosition[1]] = [row, column];
+                    }
+                }
+            }
+
+            //verify
+            assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
+            assert.deepEqual(expectedPathPosition, resultPathPosition);
+        })
+
+        it('moves the player character right one position when the direction parameter is "d" and leaves a path character in the previous position', () => {
+            //setup
+            const expectedPlayerPosition = [1, 2];
+            const expectedPathPosition = [1, 1];
+            
+
+            //exercise
+            fieldGame.move('d');
+            const resultPlayerPosition = [fieldGame.playerRowPosition, fieldGame.playerColumnPosition];
+            const resultPathPosition = [];
+            for (let row = 0; row < fieldGame.gameGrid.length; row++) {
+                for (let column = 0; column < fieldGame.gameGrid[row].length; column++) {
+                    if (fieldGame.gameGrid[row][column] === pathCharacter) {
+                        [resultPathPosition[0], resultPathPosition[1]] = [row, column];
+                    }
+                }
+            }
+
+            //verify
+            assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
+            assert.deepEqual(expectedPathPosition, resultPathPosition);
+        })
+
+        it('moves the player character up one position when the direction parameter is "w" and leaves a path character in the previous position', () => {
+            //setup
+            const expectedPlayerPosition = [0, 1];
+            const expectedPathPosition = [1, 1];
+            
+
+            //exercise
+            fieldGame.move('w');
+            const resultPlayerPosition = [fieldGame.playerRowPosition, fieldGame.playerColumnPosition];
+            const resultPathPosition = [];
+            for (let row = 0; row < fieldGame.gameGrid.length; row++) {
+                for (let column = 0; column < fieldGame.gameGrid[row].length; column++) {
+                    if (fieldGame.gameGrid[row][column] === pathCharacter) {
+                        [resultPathPosition[0], resultPathPosition[1]] = [row, column];
+                    }
+                }
+            }
+
+            //verify
+            assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
+            assert.deepEqual(expectedPathPosition, resultPathPosition);
+        })
+
+        it('moves the player character down one position when the direction parameter is "s" and leaves a path character in the previous position', () => {
+            //setup
+            const expectedPlayerPosition = [2, 1];
+            const expectedPathPosition = [1, 1];
+            
+
+            //exercise
+            fieldGame.move('s');
+            const resultPlayerPosition = [fieldGame.playerRowPosition, fieldGame.playerColumnPosition];
+            const resultPathPosition = [];
+            for (let row = 0; row < fieldGame.gameGrid.length; row++) {
+                for (let column = 0; column < fieldGame.gameGrid[row].length; column++) {
+                    if (fieldGame.gameGrid[row][column] === pathCharacter) {
+                        [resultPathPosition[0], resultPathPosition[1]] = [row, column];
+                    }
+                }
+            }
+
+            //verify
+            assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
+            assert.deepEqual(expectedPathPosition, resultPathPosition);
+        })
+
+        //commented out because log statement is annoying, may solve later
+        /*
+        it('it does not move the character if the direction parameter is not a valid WASD input', () => {
+            //setup
+            const expectedPlayerPosition = [1, 1];
+            const expectedPathCount = 0;
+            
+
+            //exercise
+            fieldGame.move('invalid input');
+            const resultPlayerPosition = [fieldGame.playerRowPosition, fieldGame.playerColumnPosition];
+            const resultPathCount = 0;
+            for (let row = 0; row < fieldGame.gameGrid.length; row++) {
+                for (let column = 0; column < fieldGame.gameGrid[row].length; column++) {
+                    if (fieldGame.gameGrid[row][column] === pathCharacter) {
+                        resultPathPosition = 1;
+                    }
+                }
+            }
+
+            //verify
+            assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
+            assert.strictEqual(expectedPathCount, resultPathCount);
+        })
+        */
+
+        it('throws an error if gameGrid has not been defined yet', () => {
+            //setup
+            fieldGame.gameGrid = undefined;
+
+            //exercise
+            const result = () => fieldGame.move();
+
+            //verify
+            assert.throws(result, /This method cannot be used until a game grid has been provided/);
         })
     })
 })

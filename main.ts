@@ -5,7 +5,7 @@ const { Field } = require('./FieldClass');
 
 
 let findYourHatGame = new Field([
-    ['*', '░', 'O'],
+    ['!', '░', 'O'],
     ['░', 'O', '░'],
     ['░', '^', '░'],
   ]);
