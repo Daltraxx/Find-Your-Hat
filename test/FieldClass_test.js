@@ -695,7 +695,7 @@ describe('Field', () => {
             fieldGame = new Field();
             fieldGame.gameGrid = [
                 ['░', '░', '░'],
-                ['░', '!', '░'],
+                ['░', playerCharacter, '░'],
                 ['░', '░', '░']
             ];
             fieldGame.setPlayerPosition();
@@ -725,6 +725,20 @@ describe('Field', () => {
             assert.deepEqual(expectedPathPosition, resultPathPosition);
         })
 
+        it('ends the game and does not move the player\'s position left if the new position satisfies game\'s end conditions', () => {
+            //setup
+            fieldGame.gameGrid[1][0] = holeCharacter;
+            fieldGame.setHoles();
+            const expectedPlayerPosition = [1, 1];
+
+            //exercise
+            fieldGame.moveLeft();
+            const resultPlayerPosition = [fieldGame.playerRowPosition, fieldGame.playerColumnPosition];
+
+            //verify
+            assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
+        })
+
         it('throws an error if gameGrid has not been defined yet', () => {
             //setup
             fieldGame.gameGrid = undefined;
@@ -744,7 +758,7 @@ describe('Field', () => {
             fieldGame = new Field();
             fieldGame.gameGrid = [
                 ['░', '░', '░'],
-                ['░', '!', '░'],
+                ['░', playerCharacter, '░'],
                 ['░', '░', '░']
             ];
             fieldGame.setPlayerPosition();
@@ -774,6 +788,20 @@ describe('Field', () => {
             assert.deepEqual(expectedPathPosition, resultPathPosition);
         })
 
+        it('ends the game and does not move the player\'s position right if the new position satisfies game\'s end conditions', () => {
+            //setup
+            fieldGame.gameGrid[1][2] = hatCharacter;
+            fieldGame.setHatPosition();
+            const expectedPlayerPosition = [1, 1];
+
+            //exercise
+            fieldGame.moveRight();
+            const resultPlayerPosition = [fieldGame.playerRowPosition, fieldGame.playerColumnPosition];
+
+            //verify
+            assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
+        })
+
         it('throws an error if gameGrid has not been defined yet', () => {
             //setup
             fieldGame.gameGrid = undefined;
@@ -793,7 +821,7 @@ describe('Field', () => {
             fieldGame = new Field();
             fieldGame.gameGrid = [
                 ['░', '░', '░'],
-                ['░', '!', '░'],
+                ['░', playerCharacter, '░'],
                 ['░', '░', '░']
             ];
             fieldGame.setPlayerPosition();
@@ -823,6 +851,20 @@ describe('Field', () => {
             assert.deepEqual(expectedPathPosition, resultPathPosition);
         })
 
+        it('ends the game and does not move the player\'s position up if the new position satisfies game\'s end conditions', () => {
+            //setup
+            fieldGame.gameGrid[0][1] = hatCharacter;
+            fieldGame.setHatPosition();
+            const expectedPlayerPosition = [1, 1];
+
+            //exercise
+            fieldGame.moveUp();
+            const resultPlayerPosition = [fieldGame.playerRowPosition, fieldGame.playerColumnPosition];
+
+            //verify
+            assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
+        })
+
         it('throws an error if gameGrid has not been defined yet', () => {
             //setup
             fieldGame.gameGrid = undefined;
@@ -842,7 +884,7 @@ describe('Field', () => {
             fieldGame = new Field();
             fieldGame.gameGrid = [
                 ['░', '░', '░'],
-                ['░', '!', '░'],
+                ['░', playerCharacter, '░'],
                 ['░', '░', '░']
             ];
             fieldGame.setPlayerPosition();
@@ -872,6 +914,19 @@ describe('Field', () => {
             assert.deepEqual(expectedPathPosition, resultPathPosition);
         })
 
+        it('ends the game and does not move the player\'s position down if the new position satisfies game\'s end conditions', () => {
+            //setup
+            const expectedPlayerPosition = [2, 1];
+
+            //exercise
+            fieldGame.moveDown();
+            fieldGame.moveDown();
+            const resultPlayerPosition = [fieldGame.playerRowPosition, fieldGame.playerColumnPosition];
+
+            //verify
+            assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
+        })
+
         it('throws an error if gameGrid has not been defined yet', () => {
             //setup
             fieldGame.gameGrid = undefined;
@@ -883,4 +938,6 @@ describe('Field', () => {
             assert.throws(result, /This method cannot be used until a game grid has been provided/);
         })
     })
+
+    
 })
