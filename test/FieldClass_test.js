@@ -939,5 +939,42 @@ describe('Field', () => {
         })
     })
 
-    
+    describe('meetsEndConditions', () => {
+
+        let fieldGame;
+        beforeEach(() => {
+            fieldGame = new Field();
+            fieldGame.gameGrid = [
+                ['░', '░', '░'],
+                ['░', '░', hatCharacter],
+                ['░', '░', holeCharacter]
+            ];
+            fieldGame.setFieldDimensions();
+            fieldGame.setHoles();
+        })
+
+        it('returns true if newPosition parameter is out of the game map\'s bounds', () => {
+            //setup
+            const newPosition = [0, 4];
+            const expectedResult = true;
+
+            //exercise
+            const actualResult = fieldGame.meetsEndConditions(newPosition);
+
+            //verify
+            assert.strictEqual(expectedResult, actualResult);
+
+        })
+
+        it('throws an error if gameGrid has not been defined yet', () => {
+            //setup
+            fieldGame.gameGrid = undefined;
+
+            //exercise
+            const result = () => fieldGame.meetsEndConditions();
+
+            //verify
+            assert.throws(result, /This method cannot be used until a game grid has been provided/);
+        })
+    })
 })
