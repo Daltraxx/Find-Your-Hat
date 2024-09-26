@@ -109,7 +109,7 @@ class Field {
         }
 
         //randomly select spots to be holes if spot is already field character
-        const allowedHoles = Math.floor((this.fieldHeight * this.fieldWidth) * (percentageHoles / 100));
+        const allowedHoles = Math.floor(((this.fieldHeight * this.fieldWidth) - 2) * (percentageHoles / 100));
         let holeCount = 0;
         while (holeCount < allowedHoles) {
             for (let row = 0; row < this.fieldHeight; row++) {

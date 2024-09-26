@@ -329,7 +329,7 @@ describe('Field', () => {
             percentageHoles = 60;
             fieldGame.populateRandomHoles(field, percentageHoles);
             let resultNumberHoles = 0;
-            const expectedNumberHoles = Math.floor((fieldGame.fieldHeight * fieldGame.fieldWidth) * (percentageHoles / 100)); //10 holes
+            const expectedNumberHoles = Math.floor(((fieldGame.fieldHeight * fieldGame.fieldWidth) - 2) * (percentageHoles / 100)); //9
 
             //exercise
             for (let row = 0; row < field.length; row++) {
@@ -505,17 +505,6 @@ describe('Field', () => {
             hatRandom = true;
         })
 
-        it('throws an error if called and no gameGrid has been defined', () => {
-            //setup
-            fieldGame.gameGrid = undefined;
-
-            //exercise
-            const result = () => fieldGame.hideHoles();
-
-            //verify
-            assert.throws(result, /Game Grid must already be provided/);
-        })
-
         it('hides all holes and only holes by replacing them with field characters', () => {
             //setup
             fieldGame.gameGrid = fieldGame.generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom, hatRandom);
@@ -541,6 +530,19 @@ describe('Field', () => {
             assert.strictEqual(expectedHatCount, resultHatCount);
             assert.strictEqual(expectedHoleCount, resultHoleCount);
 
+        })
+
+
+
+        it('throws an error if called and no gameGrid has been defined', () => {
+            //setup
+            fieldGame.gameGrid = undefined;
+
+            //exercise
+            const result = () => fieldGame.hideHoles();
+
+            //verify
+            assert.throws(result, /Game Grid must already be provided/);
         })
     })
 
@@ -649,8 +651,6 @@ describe('Field', () => {
             assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
             assert.deepEqual(expectedPathPosition, resultPathPosition);
         })
-
-        //commented out because log statement is annoying, may solve later
         
         it('it does not move the character if the direction parameter is not a valid WASD input', () => {
             //setup
