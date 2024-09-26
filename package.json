@@ -4,13 +4,14 @@
   "description": "A terminal maze-solving game.",
   "main": "main.js",
   "author": "Dalton Pettus",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "prompt-sync": "^4.1.7"
   },
   "devDependencies": {
     "@types/node": "^22.1.0",
-    "mocha": "^10.7.3"
+    "mocha": "^10.7.3",
+    "mocha-suppress-logs": "^0.5.1"
   },
   "scripts": {
     "test": "mocha"

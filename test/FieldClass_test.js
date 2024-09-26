@@ -546,7 +546,7 @@ describe('Field', () => {
 
     describe('move', () => {
         
-        let fieldGame, gameMap;
+        let fieldGame;
         beforeEach(() => {
             fieldGame = new Field();
             fieldGame.gameGrid = [
@@ -651,7 +651,7 @@ describe('Field', () => {
         })
 
         //commented out because log statement is annoying, may solve later
-        /*
+        
         it('it does not move the character if the direction parameter is not a valid WASD input', () => {
             //setup
             const expectedPlayerPosition = [1, 1];
@@ -665,7 +665,7 @@ describe('Field', () => {
             for (let row = 0; row < fieldGame.gameGrid.length; row++) {
                 for (let column = 0; column < fieldGame.gameGrid[row].length; column++) {
                     if (fieldGame.gameGrid[row][column] === pathCharacter) {
-                        resultPathPosition = 1;
+                        resultPathCount = 1;
                     }
                 }
             }
@@ -674,7 +674,7 @@ describe('Field', () => {
             assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
             assert.strictEqual(expectedPathCount, resultPathCount);
         })
-        */
+        
 
         it('throws an error if gameGrid has not been defined yet', () => {
             //setup
@@ -682,6 +682,202 @@ describe('Field', () => {
 
             //exercise
             const result = () => fieldGame.move();
+
+            //verify
+            assert.throws(result, /This method cannot be used until a game grid has been provided/);
+        })
+    })
+
+    describe('moveLeft', () => {
+
+        let fieldGame;
+        beforeEach(() => {
+            fieldGame = new Field();
+            fieldGame.gameGrid = [
+                ['░', '░', '░'],
+                ['░', '!', '░'],
+                ['░', '░', '░']
+            ];
+            fieldGame.setPlayerPosition();
+            fieldGame.setFieldDimensions();
+        })
+
+        it('moves the player down one position and leaves a path character in previous position', () => {
+            //setup
+            const expectedPlayerPosition = [1, 0];
+            const expectedPathPosition = [1, 1];
+            
+
+            //exercise
+            fieldGame.moveLeft();
+            const resultPlayerPosition = [fieldGame.playerRowPosition, fieldGame.playerColumnPosition];
+            const resultPathPosition = [];
+            for (let row = 0; row < fieldGame.gameGrid.length; row++) {
+                for (let column = 0; column < fieldGame.gameGrid[row].length; column++) {
+                    if (fieldGame.gameGrid[row][column] === pathCharacter) {
+                        [resultPathPosition[0], resultPathPosition[1]] = [row, column];
+                    }
+                }
+            }
+
+            //verify
+            assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
+            assert.deepEqual(expectedPathPosition, resultPathPosition);
+        })
+
+        it('throws an error if gameGrid has not been defined yet', () => {
+            //setup
+            fieldGame.gameGrid = undefined;
+
+            //exercise
+            const result = () => fieldGame.moveLeft();
+
+            //verify
+            assert.throws(result, /This method cannot be used until a game grid has been provided/);
+        })
+    })
+
+    describe('moveRight', () => {
+
+        let fieldGame;
+        beforeEach(() => {
+            fieldGame = new Field();
+            fieldGame.gameGrid = [
+                ['░', '░', '░'],
+                ['░', '!', '░'],
+                ['░', '░', '░']
+            ];
+            fieldGame.setPlayerPosition();
+            fieldGame.setFieldDimensions();
+        })
+
+        it('moves the player right one position and leaves a path character in previous position', () => {
+            //setup
+            const expectedPlayerPosition = [1, 2];
+            const expectedPathPosition = [1, 1];
+            
+
+            //exercise
+            fieldGame.moveRight();
+            const resultPlayerPosition = [fieldGame.playerRowPosition, fieldGame.playerColumnPosition];
+            const resultPathPosition = [];
+            for (let row = 0; row < fieldGame.gameGrid.length; row++) {
+                for (let column = 0; column < fieldGame.gameGrid[row].length; column++) {
+                    if (fieldGame.gameGrid[row][column] === pathCharacter) {
+                        [resultPathPosition[0], resultPathPosition[1]] = [row, column];
+                    }
+                }
+            }
+            
+            //verify
+            assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
+            assert.deepEqual(expectedPathPosition, resultPathPosition);
+        })
+
+        it('throws an error if gameGrid has not been defined yet', () => {
+            //setup
+            fieldGame.gameGrid = undefined;
+
+            //exercise
+            const result = () => fieldGame.moveRight();
+
+            //verify
+            assert.throws(result, /This method cannot be used until a game grid has been provided/);
+        })
+    })
+
+    describe('moveUp', () => {
+
+        let fieldGame;
+        beforeEach(() => {
+            fieldGame = new Field();
+            fieldGame.gameGrid = [
+                ['░', '░', '░'],
+                ['░', '!', '░'],
+                ['░', '░', '░']
+            ];
+            fieldGame.setPlayerPosition();
+            fieldGame.setFieldDimensions();
+        })
+
+        it('moves the player down up position and leaves a path character in previous position', () => {
+            //setup
+            const expectedPlayerPosition = [0, 1];
+            const expectedPathPosition = [1, 1];
+            
+
+            //exercise
+            fieldGame.moveUp();
+            const resultPlayerPosition = [fieldGame.playerRowPosition, fieldGame.playerColumnPosition];
+            const resultPathPosition = [];
+            for (let row = 0; row < fieldGame.gameGrid.length; row++) {
+                for (let column = 0; column < fieldGame.gameGrid[row].length; column++) {
+                    if (fieldGame.gameGrid[row][column] === pathCharacter) {
+                        [resultPathPosition[0], resultPathPosition[1]] = [row, column];
+                    }
+                }
+            }
+
+            //verify
+            assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
+            assert.deepEqual(expectedPathPosition, resultPathPosition);
+        })
+
+        it('throws an error if gameGrid has not been defined yet', () => {
+            //setup
+            fieldGame.gameGrid = undefined;
+
+            //exercise
+            const result = () => fieldGame.moveUp();
+
+            //verify
+            assert.throws(result, /This method cannot be used until a game grid has been provided/);
+        })
+    })
+
+    describe('moveDown', () => {
+
+        let fieldGame;
+        beforeEach(() => {
+            fieldGame = new Field();
+            fieldGame.gameGrid = [
+                ['░', '░', '░'],
+                ['░', '!', '░'],
+                ['░', '░', '░']
+            ];
+            fieldGame.setPlayerPosition();
+            fieldGame.setFieldDimensions();
+        })
+
+        it('moves the player down one position and leaves a path character in previous position', () => {
+            //setup
+            const expectedPlayerPosition = [2, 1];
+            const expectedPathPosition = [1, 1];
+            
+
+            //exercise
+            fieldGame.moveDown();
+            const resultPlayerPosition = [fieldGame.playerRowPosition, fieldGame.playerColumnPosition];
+            const resultPathPosition = [];
+            for (let row = 0; row < fieldGame.gameGrid.length; row++) {
+                for (let column = 0; column < fieldGame.gameGrid[row].length; column++) {
+                    if (fieldGame.gameGrid[row][column] === pathCharacter) {
+                        [resultPathPosition[0], resultPathPosition[1]] = [row, column];
+                    }
+                }
+            }
+
+            //verify
+            assert.deepEqual(expectedPlayerPosition, resultPlayerPosition);
+            assert.deepEqual(expectedPathPosition, resultPathPosition);
+        })
+
+        it('throws an error if gameGrid has not been defined yet', () => {
+            //setup
+            fieldGame.gameGrid = undefined;
+
+            //exercise
+            const result = () => fieldGame.moveDown();
 
             //verify
             assert.throws(result, /This method cannot be used until a game grid has been provided/);

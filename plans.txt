@@ -1,4 +1,4 @@
-- change player character from path
+- have field start with undefined field dimensions, and throw errors for related methods when still undefined
 - use hashmap for storing hole positions
 - change name of getKeyPosition to getRandomKeyPosition
 - have generateField automatically set gameGrid for instance(?)

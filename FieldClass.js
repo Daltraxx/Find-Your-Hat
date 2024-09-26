@@ -248,7 +248,7 @@ class Field {
         }
         switch (direction) {
             case 'a':
-                this.moveleft();
+                this.moveLeft();
                 break;
             case 'd':
                 this.moveRight();
@@ -263,10 +263,9 @@ class Field {
                 console.log("Please enter a valid WASD control.");
         }
     }
-    moveleft() {
+    moveLeft() {
         if (this.gameGrid === undefined) {
-            console.log('This method cannot be used until a game grid has been provided');
-            return;
+            throw new Error('This method cannot be used until a game grid has been provided');
         }
         const newPosition = [this.playerRowPosition, this.playerColumnPosition - 1];
         if (this.meetsEndConditions(newPosition)) {
@@ -280,8 +279,7 @@ class Field {
     }
     moveRight() {
         if (this.gameGrid === undefined) {
-            console.log('This method cannot be used until a game grid has been provided');
-            return;
+            throw new Error('This method cannot be used until a game grid has been provided');
         }
         const newPosition = [this.playerRowPosition, this.playerColumnPosition + 1];
         if (this.meetsEndConditions(newPosition)) {
@@ -293,8 +291,7 @@ class Field {
     }
     moveUp() {
         if (this.gameGrid === undefined) {
-            console.log('This method cannot be used until a game grid has been provided');
-            return;
+            throw new Error('This method cannot be used until a game grid has been provided');
         }
         const newPosition = [this.playerRowPosition - 1, this.playerColumnPosition];
         if (this.meetsEndConditions(newPosition)) {
@@ -306,8 +303,7 @@ class Field {
     }
     moveDown() {
         if (this.gameGrid === undefined) {
-            console.log('This method cannot be used until a game grid has been provided');
-            return;
+            throw new Error('This method cannot be used until a game grid has been provided');
         }
         const newPosition = [this.playerRowPosition + 1, this.playerColumnPosition];
         if (this.meetsEndConditions(newPosition)) {

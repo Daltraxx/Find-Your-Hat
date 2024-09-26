@@ -301,7 +301,7 @@ class Field {
 
         switch (direction) {
             case 'a':
-                this.moveleft();
+                this.moveLeft();
                 break;
             case 'd':
                 this.moveRight();
@@ -317,10 +317,9 @@ class Field {
         }
     }
 
-    moveleft(): void {
+    moveLeft(): void {
         if (this.gameGrid === undefined) {
-            console.log('This method cannot be used until a game grid has been provided');
-            return;
+            throw new Error('This method cannot be used until a game grid has been provided');
         }
 
         const newPosition = [this.playerRowPosition, this.playerColumnPosition - 1];
@@ -338,8 +337,7 @@ class Field {
 
     moveRight(): void {
         if (this.gameGrid === undefined) {
-            console.log('This method cannot be used until a game grid has been provided');
-            return;
+            throw new Error('This method cannot be used until a game grid has been provided');
         }
 
         const newPosition = [this.playerRowPosition, this.playerColumnPosition + 1];
@@ -356,8 +354,7 @@ class Field {
 
     moveUp(): void {
         if (this.gameGrid === undefined) {
-            console.log('This method cannot be used until a game grid has been provided');
-            return;
+            throw new Error('This method cannot be used until a game grid has been provided');
         }
 
         const newPosition = [this.playerRowPosition - 1, this.playerColumnPosition];
@@ -374,8 +371,7 @@ class Field {
         
     moveDown(): void {
         if (this.gameGrid === undefined) {
-            console.log('This method cannot be used until a game grid has been provided');
-            return;
+            throw new Error('This method cannot be used until a game grid has been provided');
         }
 
         const newPosition = [this.playerRowPosition + 1, this.playerColumnPosition];
