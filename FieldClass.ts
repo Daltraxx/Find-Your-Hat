@@ -11,6 +11,12 @@ enum Character {
     Path = '*'
 }
 
+enum GameOverReason {
+    OutOfBounds = 'out',
+    Win = 'win',
+    FellInHole = 'fell'
+}
+
 class Field {
     
     gameGrid: undefined | string[][];
@@ -395,33 +401,34 @@ class Field {
 
         let stringifiedPosition = JSON.stringify(newPosition);
         if (newPositionRow < 0 || newPositionRow > this.fieldHeight - 1 || newPositionColumn < 0 || newPositionColumn > this.fieldWidth - 1) {
-            this.gameOver('out');
+            this.gameOver(GameOverReason.OutOfBounds);
             return true;
         } else if (this.gameGrid[newPositionRow][newPositionColumn] === Character.Hat) {
-            this.gameOver('win');
+            this.gameOver(GameOverReason.Win);
             return true;
         } else if (this.holes.find((element) => JSON.stringify(element) === stringifiedPosition)) {
-            this.gameOver('fell');
+            this.gameOver(GameOverReason.OutOfBounds);
             return true;
         } else {
             return false;
         }
     }
 
-    gameOver(reason : string): void {
+    gameOver(reason : string): string {
         switch (reason) {
-            case 'out': 
+            case GameOverReason.OutOfBounds: 
                 console.log('You went out of bounds! Game Over.');
                 this.gameActive = false;
-                break;
-            case 'fell':
+                return GameOverReason.OutOfBounds;
+            case GameOverReason.FellInHole:
                 console.log('You fell down a hole! Game Over.');
                 this.gameActive = false;
-                break;
+                return GameOverReason.FellInHole;
             default:
                 this.printVictory();
                 console.log('You found your hat! Thank God. Victory!');
                 this.gameActive = false;
+                return GameOverReason.Win;
         }
     }
 }

@@ -941,7 +941,7 @@ describe('Field', () => {
 
     describe('meetsEndConditions', () => {
 
-        let fieldGame;
+        let fieldGame, outOfBoundsPosition, hatPosition, holePosition, safePosition;
         beforeEach(() => {
             fieldGame = new Field();
             fieldGame.gameGrid = [
@@ -951,11 +951,18 @@ describe('Field', () => {
             ];
             fieldGame.setFieldDimensions();
             fieldGame.setHoles();
+            fieldGame.setHatPosition();
+            fieldGame.gameActive = true;
+
+            outOfBoundsPosition = [0, 4];
+            hatPosition = [1, 3];
+            holePosition = [2, 3];
+            safePosition = [0, 0];
         })
 
-        it('returns true if newPosition parameter is out of the game map\'s bounds', () => {
+        it('returns true if newPosition parameter is out of the game map\'s bounds and calls gameOver to end the game', () => {
             //setup
-            const newPosition = [0, 4];
+            const newPosition = outOfBoundsPosition;
             const expectedResult = true;
 
             //exercise
@@ -963,7 +970,46 @@ describe('Field', () => {
 
             //verify
             assert.strictEqual(expectedResult, actualResult);
+            assert.strictEqual(fieldGame.gameActive, false);
+        })
 
+        it('returns true if newPosition parameter is the hat location and calls gameOver to end the game', () => {
+            //setup
+            const newPosition = hatPosition;
+            const expectedResult = true;
+
+            //exercise
+            const actualResult = fieldGame.meetsEndConditions(newPosition);
+
+            //verify
+            assert.strictEqual(expectedResult, actualResult);
+            assert.strictEqual(fieldGame.gameActive, false);
+        })
+
+        it('returns true if newPosition parameter is a hole location and calls gameOver to end the game', () => {
+            //setup
+            const newPosition = holePosition;
+            const expectedResult = true;
+
+            //exercise
+            const actualResult = fieldGame.meetsEndConditions(newPosition);
+
+            //verify
+            assert.strictEqual(expectedResult, actualResult);
+            assert.strictEqual(fieldGame.gameActive, false);
+        })
+
+        it('returns false if newPosition parameter does not meet end conditions and does not call gameOver to end the game', () => {
+            //setup
+            const newPosition = safePosition;
+            const expectedResult = false;
+
+            //exercise
+            const actualResult = fieldGame.meetsEndConditions(newPosition);
+
+            //verify
+            assert.strictEqual(expectedResult, actualResult);
+            assert.strictEqual(fieldGame.gameActive, true);
         })
 
         it('throws an error if gameGrid has not been defined yet', () => {
@@ -975,6 +1021,66 @@ describe('Field', () => {
 
             //verify
             assert.throws(result, /This method cannot be used until a game grid has been provided/);
+        })
+    })
+
+    describe('gameOver', () => {
+
+        let fieldGame, gameOverReason, consoleSpy;
+        beforeEach(() => {
+            fieldGame = new Field();
+            fieldGame.gameActive = true;
+
+            gameOverReason = {
+                OutOfBounds: 'out',
+                Win: 'win',
+                FellInHole: 'fell'
+            }
+        })
+
+        it('ends the game if "out" is the passed in gameOver reason and returns the reason', () => {
+            //setup
+            const gameOverArgument = gameOverReason.OutOfBounds;
+            const expectedGameActiveResult = false;
+            const expectedGameOverReturnReason = gameOverArgument;
+
+            //exercise
+            const actualGameOverReturnReason = fieldGame.gameOver(gameOverArgument);
+            const actualGameActiveResult = fieldGame.gameActive;
+
+            //verify
+            assert.equal(expectedGameActiveResult, actualGameActiveResult);
+            assert.equal(expectedGameOverReturnReason, actualGameOverReturnReason);
+        })
+
+        it('ends the game if "win" is the passed in gameOver reason and returns the reason', () => {
+            //setup
+            const gameOverArgument = gameOverReason.Win;
+            const expectedGameActiveResult = false;
+            const expectedGameOverReturnReason = gameOverArgument;
+
+            //exercise
+            const actualGameOverReturnReason = fieldGame.gameOver(gameOverArgument);
+            const actualGameActiveResult = fieldGame.gameActive;
+
+            //verify
+            assert.equal(expectedGameActiveResult, actualGameActiveResult);
+            assert.equal(expectedGameOverReturnReason, actualGameOverReturnReason);
+        })
+
+        it('ends the game if "fell" is the passed in gameOver reason and returns the reason', () => {
+            //setup
+            const gameOverArgument = gameOverReason.FellInHole;
+            const expectedGameActiveResult = false;
+            const expectedGameOverReturnReason = gameOverArgument;
+
+            //exercise
+            const actualGameOverReturnReason = fieldGame.gameOver(gameOverArgument);
+            const actualGameActiveResult = fieldGame.gameActive;
+
+            //verify
+            assert.equal(expectedGameActiveResult, actualGameActiveResult);
+            assert.equal(expectedGameOverReturnReason, actualGameOverReturnReason);
         })
     })
 })
