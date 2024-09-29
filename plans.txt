@@ -1,4 +1,7 @@
 - have field start with undefined field dimensions, and throw errors for related methods when still undefined
 - use hashmap for storing hole positions
-- change name of getKeyPosition to getRandomKeyPosition
+- use gameGridSolvable to check predefined maps too
+- have player and hat be minimumWidth apart
+- only check predetermined set of times for solvable field before telling player to try populating less holes
+- make tests for meetsEndConditions more specific on which endCondition was triggered
 - have generateField automatically set gameGrid for instance(?)

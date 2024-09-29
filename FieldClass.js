@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const { isGameGridSolvable } = require('./ensureSolvableAlgorithm/isGameGridSolvable');
 const prompt = require('prompt-sync')({ sigint: true });
 var Character;
 (function (Character) {
@@ -88,6 +89,8 @@ class Field {
         const setHole = (percentageHoles) => {
             return Math.random() * 100 <= percentageHoles;
         };
+        //ensure this.holes is empty to start out
+        this.holes = [];
         //randomly select spots to be holes if spot is already field character
         const allowedHoles = Math.floor(((this.fieldHeight * this.fieldWidth) - 2) * (percentageHoles / 100));
         let holeCount = 0;
@@ -110,30 +113,38 @@ class Field {
         }
     }
     generateField(fieldHeight, fieldWidth, percentageHoles, playerRandom = false, hatRandom = false) {
-        let field = [];
+        let field;
         this.fieldHeight = fieldHeight;
         this.fieldWidth = fieldWidth;
-        //fill out field with predefined height and width and fill with fieldCharacter
-        for (let i = 0; i < fieldHeight; i++) {
-            field.push(new Array(fieldWidth).fill(Character.Field));
-        }
-        //set player position in random spot if playerRandom is true
-        if (playerRandom)
-            [this.playerRowPosition, this.playerColumnPosition] = this.getRandomKeyPosition(fieldHeight, fieldWidth);
-        field[this.playerRowPosition][this.playerColumnPosition] = Character.Player;
-        //set hat in random spot if hatRandom is true, making sure it's not same spot as player
-        if (hatRandom) {
-            do {
-                [this.hatRowPosition, this.hatColumnPosition] = this.getRandomKeyPosition(fieldHeight, fieldWidth);
-            } while (this.hatRowPosition === this.playerRowPosition && this.hatColumnPosition === this.playerColumnPosition);
-        }
-        else {
-            [this.hatRowPosition, this.hatColumnPosition] = [fieldHeight - 1, fieldWidth - 2];
-        }
-        field[this.hatRowPosition][this.hatColumnPosition] = Character.Hat;
-        //set random holes up to allowed percentage
-        this.populateRandomHoles(field, percentageHoles);
+        let playerPosition;
+        do {
+            field = [];
+            //fill out field with predefined height and width and fill with fieldCharacter
+            for (let i = 0; i < fieldHeight; i++) {
+                field.push(new Array(fieldWidth).fill(Character.Field));
+            }
+            //set player position in random spot if playerRandom is true
+            if (playerRandom)
+                [this.playerRowPosition, this.playerColumnPosition] = this.getRandomKeyPosition(fieldHeight, fieldWidth);
+            playerPosition = [this.playerRowPosition, this.playerColumnPosition];
+            field[this.playerRowPosition][this.playerColumnPosition] = Character.Player;
+            //set hat in random spot if hatRandom is true, making sure it's not same spot as player
+            if (hatRandom) {
+                do {
+                    [this.hatRowPosition, this.hatColumnPosition] = this.getRandomKeyPosition(fieldHeight, fieldWidth);
+                } while (this.hatRowPosition === this.playerRowPosition && this.hatColumnPosition === this.playerColumnPosition);
+            }
+            else {
+                [this.hatRowPosition, this.hatColumnPosition] = [fieldHeight - 1, fieldWidth - 2];
+            }
+            field[this.hatRowPosition][this.hatColumnPosition] = Character.Hat;
+            //set random holes up to allowed percentage
+            this.populateRandomHoles(field, percentageHoles);
+        } while (!this.gameGridSolvable(field, playerPosition));
         return field;
+    }
+    gameGridSolvable(gameGrid, playerPosition) {
+        return isGameGridSolvable(gameGrid, playerPosition);
     }
     getUserFieldValues() {
         let makeCustomField = prompt('Would you like to define values for a custom field? Enter "y" or "n" >> ');
@@ -334,7 +345,7 @@ class Field {
             return true;
         }
         else if (this.holes.find((element) => JSON.stringify(element) === stringifiedPosition)) {
-            this.gameOver(GameOverReason.OutOfBounds);
+            this.gameOver(GameOverReason.FellInHole);
             return true;
         }
         else {

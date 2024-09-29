@@ -1,10 +1,4 @@
-const { PositionGraph, Vertex, Edge } = require('./PositionGraph');
-
-const testField = [
-    ['!', 'O', 'O'],
-    ['░', '░', '░'],
-    ['O', '^', '░'],
-]
+const { PositionGraph } = require('./PositionGraph');
 
 const hole = 'O';
 const hat = '^';
@@ -58,7 +52,6 @@ const findPathToHat = (startingPoint, gameMap, visitedPositions = [startingPoint
         let colPosition = Number(neighborPosition[1]);
 
         if (gameMap[rowPosition][colPosition] === hat) {
-            console.log('Found hat!');
             return true;
         }
 
@@ -79,8 +72,20 @@ const findPathToHat = (startingPoint, gameMap, visitedPositions = [startingPoint
 }
 
 
-
+/* For testing 
+const testField = [
+    ['!', 'O', 'O'],
+    ['░', '░', '░'],
+    ['O', '^', '░'],
+]
 mapGameGrid(testField);
 const startingPoint = gameGraph.getVertexByValue(getPositionString([0, 0]));
 console.log(findPathToHat(startingPoint, testField));
-//gameGraph.print();
+*/
+
+module.exports = {
+    gameGraph,
+    getPositionString,
+    mapGameGrid,
+    findPathToHat,
+};
