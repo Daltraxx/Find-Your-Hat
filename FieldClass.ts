@@ -5,7 +5,7 @@ const { isGameGridSolvable } = require('./ensureSolvableAlgorithm/isGameGridSolv
 
 const prompt = require('prompt-sync')({sigint: true});
 
-enum Character {
+export enum Character {
     Player = '!',
     Hat = '^',
     Hole = 'O',
@@ -141,48 +141,48 @@ class Field {
         }
     }
 
-    generateField(fieldHeight : number, fieldWidth : number, percentageHoles : number, playerRandom : boolean = false, hatRandom : boolean = false): string[][] {
-        let field : string[][];
-        this.fieldHeight = fieldHeight;
-        this.fieldWidth = fieldWidth;
+    // generateField(fieldHeight : number, fieldWidth : number, percentageHoles : number, playerRandom : boolean = false, hatRandom : boolean = false): string[][] {
+    //     let field : string[][];
+    //     this.fieldHeight = fieldHeight;
+    //     this.fieldWidth = fieldWidth;
     
-        let playerPosition : number[];
+    //     let playerPosition : number[];
 
         
-        field = [];
-        //fill out field with predefined height and width and fill with fieldCharacter
-        for (let i = 0; i < fieldHeight; i++) {
-            field.push(new Array(fieldWidth).fill(Character.Field));
-        }
+    //     field = [];
+    //     //fill out field with predefined height and width and fill with fieldCharacter
+    //     for (let i = 0; i < fieldHeight; i++) {
+    //         field.push(new Array(fieldWidth).fill(Character.Field));
+    //     }
 
-        //set player position in random spot if playerRandom is true
-        if (playerRandom) [this.playerRowPosition, this.playerColumnPosition] = this.getRandomKeyPosition(fieldHeight, fieldWidth);
-        playerPosition = [this.playerRowPosition, this.playerColumnPosition];
+    //     //set player position in random spot if playerRandom is true
+    //     if (playerRandom) [this.playerRowPosition, this.playerColumnPosition] = this.getRandomKeyPosition(fieldHeight, fieldWidth);
+    //     playerPosition = [this.playerRowPosition, this.playerColumnPosition];
         
-        field[this.playerRowPosition][this.playerColumnPosition] = Character.Player;
+    //     field[this.playerRowPosition][this.playerColumnPosition] = Character.Player;
         
-        //set hat in random spot if hatRandom is true, making sure it's not same spot as player
-        if (hatRandom) {
-            do {
-                [this.hatRowPosition, this.hatColumnPosition] = this.getRandomKeyPosition(fieldHeight, fieldWidth);
-            } while (this.hatRowPosition === this.playerRowPosition && this.hatColumnPosition === this.playerColumnPosition);
-        } else {
-            [this.hatRowPosition, this.hatColumnPosition] = [fieldHeight - 1, fieldWidth - 2];
-        }
+    //     //set hat in random spot if hatRandom is true, making sure it's not same spot as player
+    //     if (hatRandom) {
+    //         do {
+    //             [this.hatRowPosition, this.hatColumnPosition] = this.getRandomKeyPosition(fieldHeight, fieldWidth);
+    //         } while (this.hatRowPosition === this.playerRowPosition && this.hatColumnPosition === this.playerColumnPosition);
+    //     } else {
+    //         [this.hatRowPosition, this.hatColumnPosition] = [fieldHeight - 1, fieldWidth - 2];
+    //     }
         
-        field[this.hatRowPosition][this.hatColumnPosition] = Character.Hat;
+    //     field[this.hatRowPosition][this.hatColumnPosition] = Character.Hat;
         
-        //set random holes up to allowed percentage
-        this.populateRandomHoles(field, percentageHoles);
-        
-
-        
+    //     //set random holes up to allowed percentage
+    //     this.populateRandomHoles(field, percentageHoles);
         
 
-        return field;
-    }
+        
+        
 
-    /*this version commented out until gameGridSolvable is working
+    //     return field;
+    // }
+
+    
     generateField(fieldHeight : number, fieldWidth : number, percentageHoles : number, playerRandom : boolean = false, hatRandom : boolean = false): string[][] {
         let field : string[][];
         this.fieldHeight = fieldHeight;
@@ -218,12 +218,9 @@ class Field {
             this.populateRandomHoles(field, percentageHoles);
         } while (!this.gameGridSolvable(field, playerPosition));
 
-        
-        
-
         return field;
     }
-    */
+    
 
     gameGridSolvable(gameGrid : string[][], playerPosition : number[]) {
         return isGameGridSolvable(gameGrid, playerPosition);
