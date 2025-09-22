@@ -123,72 +123,32 @@ var Field = /** @class */ (function () {
         this.fieldHeight = fieldHeight;
         this.fieldWidth = fieldWidth;
         var playerPosition;
-        field = [];
-        //fill out field with predefined height and width and fill with fieldCharacter
-        for (var i = 0; i < fieldHeight; i++) {
-            field.push(new Array(fieldWidth).fill(Character.Field));
-        }
-        //set player position in random spot if playerRandom is true
-        if (playerRandom)
-            _a = this.getRandomKeyPosition(fieldHeight, fieldWidth), this.playerRowPosition = _a[0], this.playerColumnPosition = _a[1];
-        playerPosition = [this.playerRowPosition, this.playerColumnPosition];
-        field[this.playerRowPosition][this.playerColumnPosition] = Character.Player;
-        //set hat in random spot if hatRandom is true, making sure it's not same spot as player
-        if (hatRandom) {
-            do {
-                _b = this.getRandomKeyPosition(fieldHeight, fieldWidth), this.hatRowPosition = _b[0], this.hatColumnPosition = _b[1];
-            } while (this.hatRowPosition === this.playerRowPosition && this.hatColumnPosition === this.playerColumnPosition);
-        }
-        else {
-            _c = [fieldHeight - 1, fieldWidth - 2], this.hatRowPosition = _c[0], this.hatColumnPosition = _c[1];
-        }
-        field[this.hatRowPosition][this.hatColumnPosition] = Character.Hat;
-        //set random holes up to allowed percentage
-        this.populateRandomHoles(field, percentageHoles);
-        return field;
-    };
-    /*this version commented out until gameGridSolvable is working
-    generateField(fieldHeight : number, fieldWidth : number, percentageHoles : number, playerRandom : boolean = false, hatRandom : boolean = false): string[][] {
-        let field : string[][];
-        this.fieldHeight = fieldHeight;
-        this.fieldWidth = fieldWidth;
-    
-        let playerPosition : number[];
-
         do {
             field = [];
             //fill out field with predefined height and width and fill with fieldCharacter
-            for (let i = 0; i < fieldHeight; i++) {
+            for (var i = 0; i < fieldHeight; i++) {
                 field.push(new Array(fieldWidth).fill(Character.Field));
             }
-
             //set player position in random spot if playerRandom is true
-            if (playerRandom) [this.playerRowPosition, this.playerColumnPosition] = this.getRandomKeyPosition(fieldHeight, fieldWidth);
+            if (playerRandom)
+                _a = this.getRandomKeyPosition(fieldHeight, fieldWidth), this.playerRowPosition = _a[0], this.playerColumnPosition = _a[1];
             playerPosition = [this.playerRowPosition, this.playerColumnPosition];
-            
             field[this.playerRowPosition][this.playerColumnPosition] = Character.Player;
-            
             //set hat in random spot if hatRandom is true, making sure it's not same spot as player
             if (hatRandom) {
                 do {
-                    [this.hatRowPosition, this.hatColumnPosition] = this.getRandomKeyPosition(fieldHeight, fieldWidth);
+                    _b = this.getRandomKeyPosition(fieldHeight, fieldWidth), this.hatRowPosition = _b[0], this.hatColumnPosition = _b[1];
                 } while (this.hatRowPosition === this.playerRowPosition && this.hatColumnPosition === this.playerColumnPosition);
-            } else {
-                [this.hatRowPosition, this.hatColumnPosition] = [fieldHeight - 1, fieldWidth - 2];
             }
-            
+            else {
+                _c = [fieldHeight - 1, fieldWidth - 2], this.hatRowPosition = _c[0], this.hatColumnPosition = _c[1];
+            }
             field[this.hatRowPosition][this.hatColumnPosition] = Character.Hat;
-            
             //set random holes up to allowed percentage
             this.populateRandomHoles(field, percentageHoles);
         } while (!this.gameGridSolvable(field, playerPosition));
-
-        
-        
-
         return field;
-    }
-    */
+    };
     Field.prototype.gameGridSolvable = function (gameGrid, playerPosition) {
         return isGameGridSolvable(gameGrid, playerPosition);
     };
