@@ -1,6 +1,3 @@
-import mapGameGrid from "./mapGameGrid.js";
-import getPositionString from "./getPositionString.js";
-import findPathToHat from "./findPathToHat.js";
 import { Character } from "../FieldClass.js";
 
 const isGameGridSolvable = (
