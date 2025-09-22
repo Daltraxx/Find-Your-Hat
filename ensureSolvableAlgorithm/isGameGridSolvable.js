@@ -43,11 +43,11 @@ var isGameGridSolvable = function (gameGrid, playerPosition) {
     }
     return false;
 };
-var testField = [
-    ["!", "O", "O"],
-    ["░", "░", "░"],
-    ["O", "O", "^"],
-];
-var playerPosition = [0, 0];
-console.log(isGameGridSolvable(testField, playerPosition));
+// const testField = [
+//   ["!", "O", "O"],
+//   ["░", "░", "░"],
+//   ["O", "O", "^"],
+// ];
+// const playerPosition: [number, number] = [0, 0];
+// console.log(isGameGridSolvable(testField, playerPosition));
 module.exports.isGameGridSolvable = isGameGridSolvable;

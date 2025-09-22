@@ -17,7 +17,7 @@ const isGameGridSolvable = (
 
   seen[playerPosition[0]][playerPosition[1]] = true;
 
-  const isValidPosition = (row, col) => {
+  const isValidPosition = (row: number, col: number) => {
     return row >= 0 && row < gridHeight && col >= 0 && col < gridWidth;
   };
   const directions = [
