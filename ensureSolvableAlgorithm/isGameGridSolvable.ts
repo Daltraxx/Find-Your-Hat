@@ -7,14 +7,18 @@ const isGameGridSolvable = (
   gameGrid: string[][],
   playerPosition: [number, number]
 ) => {
-  const hashPosition = (position: [number, number]) => {
-    const [row, col] = position;
-    return `${row}-${col}`;
-  };
+  const gridHeight = gameGrid.length;
+  const gridWidth = gameGrid[0].length;
+  const seen = new Array(gridHeight);
+  for (let i = 0; i < seen.length; i++) {
+    seen[i] = new Array(gridWidth);
+    seen[i].fill(false);
+  }
+
+  seen[playerPosition[0]][playerPosition[1]] = true;
+
   const isValidPosition = (row, col) => {
-    return (
-      row >= 0 && row < gameGrid.length && col >= 0 && col < gameGrid[0].length
-    );
+    return row >= 0 && row < gridHeight && col >= 0 && col < gridWidth;
   };
   const directions = [
     [-1, 0],
@@ -22,7 +26,6 @@ const isGameGridSolvable = (
     [0, -1],
     [0, 1],
   ];
-  const seen = [hashPosition(playerPosition)];
   const stack = [playerPosition];
   while (stack.length) {
     const position = stack.pop();
@@ -34,17 +37,12 @@ const isGameGridSolvable = (
       const fullPosition: [number, number] = [newRowPosition, newColPosition];
       if (
         isValidPosition(newRowPosition, newColPosition) &&
-        !seen.includes(hashPosition(fullPosition))
+        !seen[newRowPosition][newColPosition]
       ) {
+        seen[newRowPosition][newColPosition] = true;
         const positionCharacter = gameGrid[newRowPosition][newColPosition];
         if (positionCharacter === Character.Hat) return true;
-        const hashedPosition = hashPosition(fullPosition);
-        if (positionCharacter === Character.Hole) {
-          seen.push(hashedPosition);
-        } else {
-          stack.push(fullPosition);
-          seen.push(hashedPosition);
-        }
+        if (positionCharacter === Character.Field) stack.push(fullPosition);
       }
     }
   }
@@ -53,9 +51,9 @@ const isGameGridSolvable = (
 };
 
 // const testField = [
-//   ["!", "O", "^"],
+//   ["!", "O", "O"],
 //   ["░", "░", "░"],
-//   ["O", "O", "░"],
+//   ["O", "O", "^"],
 // ];
 // const playerPosition: [number, number] = [0, 0];
 // console.log(isGameGridSolvable(testField, playerPosition));

@@ -2,12 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var FieldClass_js_1 = require("../FieldClass.js");
 var isGameGridSolvable = function (gameGrid, playerPosition) {
-    var hashPosition = function (position) {
-        var row = position[0], col = position[1];
-        return "".concat(row, "-").concat(col);
-    };
+    var gridHeight = gameGrid.length;
+    var gridWidth = gameGrid[0].length;
+    var seen = new Array(gridHeight);
+    for (var i = 0; i < seen.length; i++) {
+        seen[i] = new Array(gridWidth);
+        seen[i].fill(false);
+    }
+    seen[playerPosition[0]][playerPosition[1]] = true;
     var isValidPosition = function (row, col) {
-        return (row >= 0 && row < gameGrid.length && col >= 0 && col < gameGrid[0].length);
+        return row >= 0 && row < gridHeight && col >= 0 && col < gridWidth;
     };
     var directions = [
         [-1, 0],
@@ -15,7 +19,6 @@ var isGameGridSolvable = function (gameGrid, playerPosition) {
         [0, -1],
         [0, 1],
     ];
-    var seen = [hashPosition(playerPosition)];
     var stack = [playerPosition];
     while (stack.length) {
         var position = stack.pop();
@@ -28,28 +31,23 @@ var isGameGridSolvable = function (gameGrid, playerPosition) {
             var newColPosition = colPosition + xMovement;
             var fullPosition = [newRowPosition, newColPosition];
             if (isValidPosition(newRowPosition, newColPosition) &&
-                !seen.includes(hashPosition(fullPosition))) {
+                !seen[newRowPosition][newColPosition]) {
+                seen[newRowPosition][newColPosition] = true;
                 var positionCharacter = gameGrid[newRowPosition][newColPosition];
                 if (positionCharacter === FieldClass_js_1.Character.Hat)
                     return true;
-                var hashedPosition = hashPosition(fullPosition);
-                if (positionCharacter === FieldClass_js_1.Character.Hole) {
-                    seen.push(hashedPosition);
-                }
-                else {
+                if (positionCharacter === FieldClass_js_1.Character.Field)
                     stack.push(fullPosition);
-                    seen.push(hashedPosition);
-                }
             }
         }
     }
     return false;
 };
-// const testField = [
-//   ["!", "O", "^"],
-//   ["░", "░", "░"],
-//   ["O", "O", "░"],
-// ];
-// const playerPosition: [number, number] = [0, 0];
-// console.log(isGameGridSolvable(testField, playerPosition));
+var testField = [
+    ["!", "O", "O"],
+    ["░", "░", "░"],
+    ["O", "O", "^"],
+];
+var playerPosition = [0, 0];
+console.log(isGameGridSolvable(testField, playerPosition));
 module.exports.isGameGridSolvable = isGameGridSolvable;
