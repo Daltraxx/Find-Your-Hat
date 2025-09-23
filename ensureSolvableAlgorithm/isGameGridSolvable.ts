@@ -4,6 +4,7 @@ const isGameGridSolvable = (
   gameGrid: string[][],
   playerPosition: [number, number]
 ) => {
+  if (!gameGrid || !gameGrid.length) return false;
   const gridHeight = gameGrid.length;
   const gridWidth = gameGrid[0].length;
   const seen = new Array(gridHeight);

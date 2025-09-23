@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var FieldClass_js_1 = require("../FieldClass.js");
 var isGameGridSolvable = function (gameGrid, playerPosition) {
+    if (!gameGrid || !gameGrid.length)
+        return false;
     var gridHeight = gameGrid.length;
     var gridWidth = gameGrid[0].length;
     var seen = new Array(gridHeight);
