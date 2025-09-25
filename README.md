@@ -17,7 +17,11 @@
 ### Executing the Program
 
 * Run ```npm start``` from the installation folder's root directory. You will then be given a series of prompts to define your game.
-* Manually defined fields can be made by modifying the field withing the Field constructor in main.ts (must be compiled after alteration using ```tsc main.ts```) or main.js (not recommended). 
+* Manually defined fields can be made by modifying the field withing the Field constructor in main.ts (must be compiled after alteration using ```tsc main.ts```) or main.js (not recommended).
+
+### Future Development
+
+* A more user-friendly UI so the game can be played outside the terminal with a more appealing game map.
 
 ### Authors
 
