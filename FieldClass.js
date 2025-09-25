@@ -153,26 +153,32 @@ var Field = /** @class */ (function () {
         return isGameGridSolvable(gameGrid, playerPosition);
     };
     Field.prototype.getUserFieldValues = function () {
+        console.log('\n');
         var makeCustomField = prompt('Would you like to define values for a custom field? Enter "y" or "n" >> ');
         switch (makeCustomField) {
             case 'y':
+                console.log("\n");
                 var fieldHeight = Math.floor(Number(prompt('Enter an integer for the field height >> ')));
                 while (isNaN(fieldHeight) || fieldHeight < 2) {
                     fieldHeight = Math.floor(Number(prompt('Please enter a valid whole number greater than 1 >> ')));
                 }
+                console.log("\n");
                 var fieldWidth = Math.floor(Number(prompt('Enter an integer for the field width >> ')));
                 while (isNaN(fieldWidth) || fieldWidth < 2) {
                     fieldWidth = Math.floor(Number(prompt('Please enter a valid whole number greater than 1 >> ')));
                 }
+                console.log("\n");
                 var percentageHoles = Number(prompt('Enter an integer for the percentage of the field that will be holes >> '));
                 while (isNaN(percentageHoles)) {
                     percentageHoles = Number(prompt('Please enter a valid number >> '));
                 }
+                console.log("\n");
                 var playerRandom = prompt('Should the player\'s starting location be random? Enter "y" or "n" >> ');
                 while (playerRandom !== 'y' && playerRandom !== 'n') {
                     playerRandom = prompt('Please enter "y" or "n" >> ');
                 }
                 playerRandom === 'y' ? playerRandom = true : playerRandom = false;
+                console.log("\n");
                 var hatRandom = prompt('Should the hat\'s location be random? Enter "y" or "n" >> ');
                 while (hatRandom !== 'y' && hatRandom !== 'n') {
                     hatRandom = prompt('Please enter "y" or "n" >> ');
@@ -207,6 +213,7 @@ var Field = /** @class */ (function () {
                 this.setPlayerPosition();
                 this.setHoles();
         }
+        console.log("\n");
         var hardMode = prompt('Hard mode? Enter "y" or "n" >> ');
         if (hardMode === 'y') {
             this.hardMode = true;
@@ -215,7 +222,7 @@ var Field = /** @class */ (function () {
         else {
             console.log('Game set to normal (holes are always visible).');
         }
-        console.log("Select a WASD control and press enter to navigate the map and find your hat!");
+        console.log("\nSelect a WASD control and press enter to navigate the map and find your hat!");
         this.gameActive = true;
         while (this.gameActive) {
             this.playTurn();
