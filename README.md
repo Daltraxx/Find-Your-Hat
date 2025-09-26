@@ -3,6 +3,10 @@
 
  Each randomly generated grid is verified as solvable via a DFS algorithm. Extensive testing is written with Mocha. User prompts are handled using prompt-sync. The game and its logic are encapsulated in a Field class following OOP principles.
 
+## Gameplay
+
+![Find Your Hat Gameplay](assets/gameplay.gif)
+
 ## Getting Started
 
 ### Installation
