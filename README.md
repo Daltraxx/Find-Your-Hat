@@ -3,7 +3,7 @@
 
  Each randomly generated grid is verified as solvable via a DFS algorithm. Extensive testing is written with Mocha. User prompts are handled using prompt-sync. The game and its logic are encapsulated in a Field class following OOP principles.
 
-## Gameplay
+## Gameplay Example
 
 ![Find Your Hat Gameplay](assets/gameplay.gif)
 
@@ -20,7 +20,7 @@
 
 ### Executing the Program
 
-* Run ```npm start``` from the installation folder's root directory. You will then be given a series of prompts to define your game.
+* Run ```npm start``` or ```node main.js``` from the installation folder's root directory. You will then be given a series of prompts to define your game.
 * Manually defined fields can be made by modifying the field withing the Field constructor in main.ts (must be compiled after alteration using ```tsc main.ts```) or main.js (not recommended).
 
 ### Future Development
